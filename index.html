@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>syllabo - সিলেবাস ট্র্যাকার</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://myimgs.org" crossorigin>
+<link rel="preconnect" href="https://i.postimg.cc" crossorigin>
+<link rel="preload" as="image" href="https://myimgs.org/storage/images/45413/file_00000000f7c4821188e00c78df9971ed.png" fetchpriority="high">
+<link rel="preload" as="image" href="https://myimgs.org/storage/images/45472/Fds.webp" fetchpriority="high">
+<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg-color:#F3F4F6;--card-bg:#FFFFFF;--text-main:#1F2937;--text-muted:#6B7280;--border-radius:16px;--tab-active:#4F46E5;--tab-inactive:#E5E7EB;--tab-text-active:#FFFFFF;--tab-text-inactive:#6B7280;--red-primary:#EF4444;--red-bg-light:#FEE2E2;--green-primary:#10B981;--green-bg-light:#D1FAE5;--shadow-sm:0 1px 2px 0 rgba(0,0,0,0.05);--shadow-md:0 4px 6px -1px rgba(0,0,0,0.1);--app-bg:#F3F4F6;--app-card-bg:#FFFFFF;--app-text-primary:#1F2937;--app-text-secondary:#6B7280;--app-border:#E5E7EB;--app-tab-inactive-bg:#E5E7EB;--app-tab-active-bg:white;--app-progress-bg:#E5E7EB;--app-progress-fill:#4F46E5;--app-hover-bg:#F3F4F6;--app-card-shadow:var(--shadow-sm);--app-countdown-bg:linear-gradient(135deg,#4F46E5,#818CF8);--app-countdown-expired-bg:linear-gradient(135deg,#F59E0B,#FBBF24);--spinner-bg:rgba(255,255,255,0.9);--badge-red:#EF4444;--badge-blue:#3B82F6;--badge-green:#10B981;--badge-gold:#F59E0B}
+[data-theme="dark"]{--bg-color:#111827;--card-bg:#1F2937;--text-main:#F9FAFB;--text-muted:#9CA3AF;--app-bg:#111827;--app-card-bg:#1F2937;--app-text-primary:#F9FAFB;--app-text-secondary:#9CA3AF;--app-border:#374151;--app-tab-inactive-bg:#374151;--app-tab-active-bg:#1F2937;--app-progress-bg:#374151;--app-hover-bg:#374151;--app-card-shadow:0 4px 6px -1px rgba(0,0,0,0.4);--app-countdown-bg:linear-gradient(135deg,#3730A3,#4F46E5);--app-countdown-expired-bg:linear-gradient(135deg,#B45309,#F59E0B);--tab-text-inactive:#9CA3AF;--red-bg-light:rgba(239,68,68,0.2);--green-bg-light:rgba(16,185,129,0.2);--spinner-bg:rgba(31,41,55,0.9)}
+*{box-sizing:border-box;margin:0;padding:0;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{height:100%;overscroll-behavior:none}
+body{font-family:'Anek Bangla',sans-serif;background-color:var(--app-bg);color:var(--app-text-primary);height:100vh;display:flex;flex-direction:column;overflow:hidden;transition:background-color .3s ease,color .3s ease}
+img{image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;backface-visibility:hidden;transform:translateZ(0)}
+.app-container{flex:1;display:flex;flex-direction:column;height:100%;padding:15px;gap:10px;max-width:800px;margin:0 auto;width:100%}
+.top-section-wrapper{flex:0 0 auto;display:flex;flex-direction:column;gap:10px}
+.bottom-section-wrapper{flex:1;display:flex;flex-direction:column;min-height:0}
+.countdown-section{background:var(--app-countdown-bg);border-radius:var(--border-radius);padding:8px 15px;color:white;box-shadow:var(--shadow-md);text-align:center;flex-shrink:0;transition:background .5s ease}
+.countdown-section.expired{background:var(--app-countdown-expired-bg);animation:pulseGolden 2s ease-in-out infinite}
+@keyframes pulseGolden{0%,100%{box-shadow:0 4px 6px -1px rgba(245,158,11,0.4)}50%{box-shadow:0 4px 20px -1px rgba(245,158,11,0.8)}}
+.countdown-title{font-size:.75rem;font-weight:500;opacity:.9;margin-bottom:2px}
+.countdown-timer{font-size:1.3rem;font-weight:700;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.countdown-timer.ended{font-size:1.1rem;letter-spacing:.4px}
+.timer-unit{font-size:.65rem;opacity:.9}
+.timer-separator{font-size:.95rem;opacity:.7}
+.merged-header-section{background:var(--app-card-bg);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--app-card-shadow);border:1px solid var(--app-border);flex-shrink:0;position:relative}
+.header-top-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.user-info-mini{display:flex;align-items:center;gap:8px;flex:1;min-width:0;cursor:pointer;padding:2px;border-radius:10px;transition:background .2s;position:relative}
+.user-info-mini:active{background:var(--app-hover-bg)}
+.user-avatar-mini.pulse-hint{animation:avatarPulse 1.6s ease-in-out infinite;border:2px solid var(--tab-active)}
+.user-avatar-mini.pulse-hint::after{content:'';position:absolute;top:-4px;left:-4px;right:-4px;bottom:-4px;border-radius:50%;border:2px solid var(--tab-active);animation:ringPulse 1.6s ease-out infinite;pointer-events:none}
+@keyframes avatarPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(79,70,229,0.5)}50%{transform:scale(1.08);box-shadow:0 0 0 8px rgba(79,70,229,0)}}
+@keyframes ringPulse{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(1.6)}}
+.profile-hint-bubble{position:absolute;top:calc(100% + 8px);left:0;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:white;font-size:.7rem;font-weight:700;padding:7px 12px;border-radius:10px;box-shadow:0 4px 12px rgba(79,70,229,.4);white-space:nowrap;z-index:50;opacity:0;transform:translateY(-6px);transition:opacity .3s,transform .3s;pointer-events:none}
+.profile-hint-bubble::before{content:'';position:absolute;top:-5px;left:14px;width:10px;height:10px;background:#4F46E5;transform:rotate(45deg);border-radius:2px}
+.profile-hint-bubble.show{opacity:1;transform:translateY(0)}
+.user-avatar-mini{width:32px;height:32px;border-radius:50%;background:var(--app-progress-bg);display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--app-border);flex-shrink:0;position:relative}
+.user-avatar-mini svg{width:18px;height:18px;stroke:var(--app-text-secondary);fill:none}
+.user-avatar-mini img{width:100%;height:100%;object-fit:cover}
+.user-name-mini{font-weight:600;font-size:.85rem;color:var(--app-text-primary);min-width:0;overflow:hidden}
+.user-name-mini #userNameSpanMini{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.user-name-mini span{font-size:.65rem;font-weight:500;color:var(--app-text-secondary);display:block}
+.user-name-mini .login-prompt{color:var(--tab-active);font-weight:700;font-size:.82rem;letter-spacing:.2px}
+.header-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.offline-indicator{width:34px;height:34px;border-radius:10px;background:var(--app-progress-bg);display:none;align-items:center;justify-content:center;color:#EF4444;flex-shrink:0;position:relative}
+.offline-indicator.show{display:flex}
+.offline-indicator svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.offline-indicator::after{content:'';position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:#EF4444;animation:offlineBlink 1.5s ease-in-out infinite}
+@keyframes offlineBlink{0%,100%{opacity:1}50%{opacity:.3}}
+.notif-btn{width:34px;height:34px;border-radius:10px;background:var(--app-progress-bg);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;color:var(--app-text-primary);transition:transform .15s}
+.notif-btn:active{transform:scale(.92)}
+.notif-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+.notif-btn .notif-dot{position:absolute;top:5px;right:5px;min-width:16px;height:16px;padding:0 4px;background:#EF4444;color:white;border-radius:8px;font-size:.6rem;font-weight:700;display:none;align-items:center;justify-content:center;line-height:1}
+.notif-btn.has-unread .notif-dot{display:flex}
+.badge-summary{display:flex;align-items:center;gap:4px;font-size:.8rem;font-weight:700;color:var(--tab-active);background:var(--app-progress-bg);padding:4px 10px;border-radius:20px}
+.badge-grid-wrapper{display:flex;flex-direction:column;gap:6px;padding-top:6px;border-top:1px solid var(--app-border)}
+.badge-row{display:flex;justify-content:space-between;gap:4px}
+.achievement-badge{width:22px;height:22px;border-radius:4px;background:var(--app-progress-bg);display:flex;align-items:center;justify-content:center;transition:all .3s ease;position:relative}
+.achievement-badge svg{width:12px;height:12px;stroke:var(--app-text-secondary);fill:none;stroke-width:3;opacity:.5}
+.achievement-badge.achieved svg{opacity:1;stroke:white}
+.achievement-badge.badge-red.achieved{background:var(--badge-red);box-shadow:0 2px 4px rgba(239,68,68,.3)}
+.achievement-badge.badge-blue.achieved{background:var(--badge-blue);box-shadow:0 2px 4px rgba(59,130,246,.3)}
+.achievement-badge.badge-green.achieved{background:var(--badge-green);box-shadow:0 2px 4px rgba(16,185,129,.3)}
+.achievement-badge.badge-special.achieved{background:linear-gradient(135deg,#F59E0B,#D97706);box-shadow:0 2px 6px rgba(245,158,11,.5);transform:scale(1.1)}
+.achievement-badge.badge-special.achieved svg{stroke:white;fill:rgba(255,255,255,.2)}
+.fluid-progress-container{width:100%;height:5px;background:var(--app-progress-bg);border-radius:10px;overflow:hidden;margin-top:4px}
+.fluid-progress-fill{height:100%;width:0%;border-radius:10px;transition:width .5s ease-out,background .5s ease}
+.nav-header{display:none;align-items:center;gap:8px;background:var(--app-tab-inactive-bg);padding:6px 10px;border-radius:12px;flex-shrink:0;margin-bottom:8px;min-height:44px}
+.nav-header.visible{display:flex}
+.back-btn{width:32px;height:32px;border-radius:8px;background:var(--app-card-bg);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--app-text-primary);flex-shrink:0;transition:transform .15s}
+.back-btn:active{transform:scale(.92)}
+.nav-title{font-size:.85rem;font-weight:700;color:var(--app-text-primary);flex:1;text-align:center;line-height:1.25;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-settings-btn{width:32px;height:32px;border-radius:8px;background:var(--app-card-bg);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--app-text-primary);flex-shrink:0;transition:transform .15s}
+.nav-settings-btn:active{transform:scale(.92)}
+.nav-settings-btn svg{width:16px;height:16px;stroke:currentColor;fill:none}
+.nav-settings-btn.hidden{visibility:hidden}
+.dashboard-sections{flex:1;position:relative;min-height:0}
+.content-section{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;animation:fadeIn .3s ease;overflow-y:auto}
+.content-section.active{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.suggestion-card{background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border:1px solid #C7D2FE;border-radius:14px;padding:12px 14px;margin:0 0 10px 0;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(79,70,229,.12);flex-shrink:0;position:relative;overflow:hidden}
+[data-theme="dark"] .suggestion-card{background:linear-gradient(135deg,#1E1B4B,#312E81);border-color:#4338CA;box-shadow:0 2px 8px rgba(99,102,241,.25)}
+.suggestion-card::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(99,102,241,.25),transparent 70%);border-radius:50%}
+.suggestion-icon{width:36px;height:36px;border-radius:10px;background:var(--tab-active);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 8px rgba(79,70,229,.35)}
+.suggestion-icon svg{width:18px;height:18px;stroke:currentColor;fill:none}
+.suggestion-content{flex:1;min-width:0}
+.suggestion-label{font-size:.62rem;font-weight:700;color:var(--tab-active);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px}
+[data-theme="dark"] .suggestion-label{color:#A5B4FC}
+.suggestion-subject{font-size:.7rem;font-weight:600;color:var(--app-text-secondary);margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suggestion-chapter{font-size:.82rem;font-weight:700;color:var(--app-text-primary);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.suggestion-done-btn{background:var(--tab-active);color:white;border:none;border-radius:8px;padding:6px 10px;font-family:inherit;font-size:.68rem;font-weight:700;cursor:pointer;flex-shrink:0;display:flex;align-items:center;gap:4px;transition:transform .15s}
+.suggestion-done-btn:active{transform:scale(.95)}
+.suggestion-done-btn svg{width:12px;height:12px;stroke:currentColor;fill:none}
+.suggestion-empty{font-size:.8rem;font-weight:600;color:var(--app-text-secondary);text-align:center;padding:4px 0;flex:1}
+.subject-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:4px;padding-bottom:20px}
+.subject-card{background:var(--app-card-bg);border:1px solid var(--app-border);border-radius:14px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;text-align:center;transition:transform .15s ease,box-shadow .2s ease,border-color .2s ease;box-shadow:var(--app-card-shadow);min-height:108px;position:relative;overflow:hidden}
+.subject-card:hover{border-color:var(--tab-active)}
+.subject-card:active{transform:scale(.97)}
+.subject-card-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.subject-card-icon svg{width:24px;height:24px;stroke:currentColor;fill:none}
+.subject-card-name{font-size:.74rem;font-weight:600;line-height:1.25;color:var(--app-text-primary);word-break:break-word}
+.subject-card-progress{font-size:.68rem;font-weight:800;color:var(--app-text-secondary);background:var(--app-progress-bg);padding:3px 11px;border-radius:10px;margin-top:2px;letter-spacing:.3px}
+.subject-card-progress.done{background:var(--green-bg-light);color:var(--green-primary)}
+.subject-card-progress.low{background:var(--red-bg-light);color:var(--red-primary)}
+.subject-card.leaderboard-card{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border:1.5px solid #F59E0B;box-shadow:0 4px 12px rgba(245,158,11,.25)}
+[data-theme="dark"] .subject-card.leaderboard-card{background:linear-gradient(135deg,#78350F,#92400E);border-color:#F59E0B}
+.subject-card.leaderboard-card .subject-card-name{color:#92400E}
+[data-theme="dark"] .subject-card.leaderboard-card .subject-card-name{color:#FDE68A}
+.subject-card.leaderboard-card .subject-card-icon{background:linear-gradient(135deg,#F59E0B,#D97706)!important;color:white!important;box-shadow:0 3px 8px rgba(245,158,11,.4)}
+.subject-card.leaderboard-card .subject-card-progress{background:rgba(245,158,11,.2);color:#92400E}
+[data-theme="dark"] .subject-card.leaderboard-card .subject-card-progress{background:rgba(253,230,138,.2);color:#FDE68A}
+.subject-card.leaderboard-card .visit-badge{position:absolute;top:6px;right:6px;background:rgba(146,64,14,.85);color:white;font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:8px;display:flex;align-items:center;gap:3px}
+.subject-card.leaderboard-card .visit-badge svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.4}
+.card{background-color:var(--app-card-bg);border-radius:var(--border-radius);box-shadow:var(--app-card-shadow);flex:1;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--app-border)}
+.card-content{flex:1;overflow-y:auto;padding:10px}
+.card-content::-webkit-scrollbar{width:4px}
+.card-content::-webkit-scrollbar-thumb{background-color:var(--app-border);border-radius:20px}
+.topic-list{list-style:none;padding-bottom:10px}
+.topic-item{padding:11px 10px;border-radius:10px;margin-bottom:6px;background-color:var(--app-hover-bg);border:1px solid transparent;display:flex;align-items:center;gap:10px;transition:all .2s;position:relative}
+.topic-item.pending-mode{cursor:pointer;border:1px dashed var(--app-border)}
+.topic-item.pending-mode:hover{border-color:var(--tab-active)}
+.topic-item.completed{background-color:var(--green-bg-light);border-left:3px solid var(--green-primary)}
+.topic-item.completed .topic-chapter{color:var(--green-primary)}
+.topic-item.highlighted{animation:highlightPulse 1.6s ease-in-out 2;border-color:var(--tab-active)!important}
+@keyframes highlightPulse{0%,100%{box-shadow:0 0 0 0 rgba(79,70,229,0)}50%{box-shadow:0 0 0 6px rgba(79,70,229,.25)}}
+.topic-icon-box{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.topic-icon-box svg{stroke:currentColor;fill:none;width:18px;height:18px}
+.topic-text-box{flex:1;min-width:0}
+.topic-chapter{font-weight:600;font-size:.85rem;line-height:1.35;word-break:break-word}
+.click-loader{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--spinner-bg);display:flex;align-items:center;justify-content:center;border-radius:inherit;z-index:5}
+.spinner{width:20px;height:20px;border:3px solid var(--app-border);border-top-color:var(--app-progress-fill);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;z-index:1000;opacity:0;visibility:hidden;transition:opacity .3s}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal-box{background:var(--app-card-bg);width:92%;max-width:420px;padding:18px;border-radius:24px;box-shadow:0 10px 25px rgba(0,0,0,.2);text-align:center;transform:scale(.9);transition:transform .3s;max-height:88vh;overflow-y:auto}
+.modal-overlay.active .modal-box{transform:scale(1)}
+.modal-title{font-size:1.05rem;font-weight:600;margin-bottom:15px;display:flex;align-items:center;justify-content:center;gap:8px}
+.modal-title svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.input-box{width:100%;padding:11px 12px;font-size:.9rem;border:2px solid var(--app-border);border-radius:12px;margin-bottom:12px;background:var(--app-card-bg);color:var(--app-text-primary);outline:none;font-family:inherit}
+.input-box:focus{border-color:var(--tab-active)}
+.btn-submit{width:100%;padding:11px;background:var(--tab-active);color:white;border:none;border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .2s}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+.auth-box{background:var(--app-card-bg);width:92%;max-width:420px;padding:22px 20px;border-radius:24px;box-shadow:0 10px 25px rgba(0,0,0,.25);transform:scale(.9);transition:transform .3s;max-height:90vh;overflow-y:auto;text-align:center;position:relative}
+.modal-overlay.active .auth-box{transform:scale(1)}
+.auth-close-x{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:10px;background:var(--app-progress-bg);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--app-text-secondary);transition:transform .15s;z-index:2}
+.auth-close-x:active{transform:scale(.9)}
+.auth-close-x svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
+.auth-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px}
+.auth-brand-logo{width:76px;height:76px;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(79,70,229,.28))}
+.auth-brand-name{font-size:1.6rem;font-weight:800;letter-spacing:.5px;background:linear-gradient(135deg,#4F46E5,#7C3AED,#EC4899);-webkit-background-clip:text;background-clip:text;color:transparent}
+.auth-subtitle{font-size:.78rem;color:var(--app-text-secondary);margin-bottom:18px;font-weight:500}
+.auth-tabs{display:flex;background:var(--app-progress-bg);border-radius:12px;padding:4px;margin-bottom:16px;gap:2px}
+.auth-tab{flex:1;padding:9px 4px;border:none;background:transparent;font-family:inherit;font-size:.82rem;font-weight:700;color:var(--app-text-secondary);border-radius:9px;cursor:pointer;transition:all .2s}
+.auth-tab.active{background:var(--app-card-bg);color:var(--tab-active);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.auth-form{text-align:left}
+.auth-label{font-size:.75rem;font-weight:700;color:var(--app-text-secondary);margin-bottom:5px;display:block;margin-left:2px}
+.auth-error{background:var(--red-bg-light);color:var(--red-primary);font-size:.78rem;font-weight:600;padding:8px 12px;border-radius:10px;margin-bottom:12px;display:none;text-align:center}
+.auth-error.show{display:block}
+.auth-success{background:var(--green-bg-light);color:var(--green-primary);font-size:.78rem;font-weight:600;padding:8px 12px;border-radius:10px;margin-bottom:12px;display:none;text-align:center}
+.auth-success.show{display:block}
+.custom-dropdown{position:relative;margin-bottom:12px}
+.dropdown-trigger{width:100%;padding:11px 12px;font-size:.9rem;border:2px solid var(--app-border);border-radius:12px;background:var(--app-card-bg);color:var(--app-text-primary);font-family:inherit;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:border-color .2s}
+.dropdown-trigger.placeholder{color:var(--app-text-secondary)}
+.dropdown-trigger.open{border-color:var(--tab-active)}
+.dropdown-trigger svg{width:16px;height:16px;stroke:var(--app-text-secondary);fill:none;stroke-width:2.4;transition:transform .2s;flex-shrink:0}
+.dropdown-trigger.open svg{transform:rotate(180deg)}
+.dropdown-menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--app-card-bg);border:2px solid var(--app-border);border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.15);overflow:hidden;z-index:50;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .2s}
+.dropdown-menu.open{opacity:1;visibility:visible;transform:translateY(0)}
+.dropdown-item{padding:11px 14px;font-size:.88rem;font-weight:600;color:var(--app-text-primary);cursor:pointer;transition:background .15s}
+.dropdown-item:hover,.dropdown-item.selected{background:var(--app-hover-bg);color:var(--tab-active)}
+.checkbox-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:14px;padding:0 2px}
+.checkbox-row input[type="checkbox"]{width:18px;height:18px;accent-color:var(--tab-active);margin-top:1px;flex-shrink:0;cursor:pointer}
+.checkbox-row label{font-size:.76rem;color:var(--app-text-secondary);font-weight:500;line-height:1.4;cursor:pointer}
+.notif-list{max-height:60vh;overflow-y:auto;text-align:left;margin-bottom:12px}
+.notif-item{background:var(--app-hover-bg);border:1px solid var(--app-border);border-left:3px solid var(--tab-active);border-radius:12px;padding:12px;margin-bottom:8px}
+.notif-item-title{font-size:.85rem;font-weight:700;color:var(--app-text-primary);margin-bottom:4px}
+.notif-item-msg{font-size:.78rem;color:var(--app-text-secondary);line-height:1.5;margin-bottom:6px;word-break:break-word}
+.notif-item-meta{font-size:.65rem;color:var(--app-text-secondary);opacity:.8;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.notif-action-btn{display:inline-flex;align-items:center;gap:5px;background:var(--tab-active);color:white;border:none;border-radius:8px;padding:7px 12px;font-family:inherit;font-size:.72rem;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .15s}
+.notif-action-btn:active{transform:scale(.95)}
+.notif-action-btn svg{width:12px;height:12px;stroke:currentColor;fill:none}
+.notif-empty{text-align:center;padding:30px 15px;color:var(--app-text-secondary);font-size:.82rem;font-weight:500}
+.notif-empty svg{width:40px;height:40px;stroke:currentColor;fill:none;opacity:.4;margin-bottom:10px;stroke-width:1.5}
+.lb-page{display:flex;flex-direction:column;gap:12px;padding:2px 2px 20px 2px}
+.lb-page-header{background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 50%,#EC4899 100%);border-radius:20px;padding:20px 16px 16px;color:white;text-align:center;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(79,70,229,.32)}
+.lb-page-header::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.25),transparent 70%)}
+.lb-page-header::after{content:'';position:absolute;bottom:-30px;left:-30px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%)}
+.lb-page-logo-wrap{position:relative;z-index:1;width:90px;height:90px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center}
+.lb-page-logo-wrap img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.25))}
+.lb-page-title{position:relative;z-index:1;font-size:1.2rem;font-weight:800;letter-spacing:.3px;margin-bottom:3px}
+.lb-page-batch{position:relative;z-index:1;display:inline-block;font-size:.72rem;font-weight:700;padding:4px 14px;border-radius:12px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);margin-bottom:10px}
+.lb-visit-counter{position:relative;z-index:1;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:20px;padding:5px 14px;font-size:.74rem;font-weight:700;backdrop-filter:blur(6px)}
+.lb-visit-counter svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+.lb-page-tabs{display:flex;background:var(--app-progress-bg);padding:4px;border-radius:12px;gap:2px}
+.lb-page-tab{flex:1;padding:10px 6px;border:none;background:transparent;font-family:inherit;font-size:.82rem;font-weight:700;color:var(--app-text-secondary);border-radius:9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px}
+.lb-page-tab.active{background:var(--app-card-bg);color:var(--tab-active);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.lb-page-tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2}
+.lb-list{display:flex;flex-direction:column;gap:8px;overflow:visible;padding:8px 4px 4px 4px}
+.lb-item{display:flex;align-items:center;gap:10px;background:var(--app-hover-bg);border:1px solid var(--app-border);border-radius:14px;padding:10px 12px;transition:transform .15s;position:relative;overflow:visible}
+.lb-item.diamond{background:linear-gradient(135deg,#E0E7FF,#C7D2FE,#A5B4FC);border:1.5px solid #6366F1;box-shadow:0 4px 14px rgba(99,102,241,.35);transform:scale(1.02);margin-top:6px}
+[data-theme="dark"] .lb-item.diamond{background:linear-gradient(135deg,#312E81,#4338CA,#6366F1);border-color:#818CF8}
+.lb-item.gold{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border:1.5px solid #F59E0B;box-shadow:0 3px 10px rgba(245,158,11,.3)}
+[data-theme="dark"] .lb-item.gold{background:linear-gradient(135deg,#78350F,#92400E);border-color:#F59E0B}
+.lb-item.silver{background:linear-gradient(135deg,#F1F5F9,#E2E8F0);border:1.5px solid #94A3B8;box-shadow:0 3px 10px rgba(148,163,184,.3)}
+[data-theme="dark"] .lb-item.silver{background:linear-gradient(135deg,#334155,#475569);border-color:#94A3B8}
+.lb-item.self{border:2.5px solid var(--tab-active)!important;box-shadow:0 0 0 3px rgba(79,70,229,.22);background:linear-gradient(135deg,rgba(79,70,229,.08),rgba(124,58,237,.06))!important;padding-right:14px}
+[data-theme="dark"] .lb-item.self{background:linear-gradient(135deg,rgba(79,70,229,.18),rgba(124,58,237,.14))!important}
+.lb-item.self .lb-rank{background:var(--tab-active)!important;color:white!important;border-color:var(--tab-active)!important}
+.lb-item.self .lb-name{color:var(--tab-active)}
+[data-theme="dark"] .lb-item.self .lb-name{color:#A5B4FC}
+.lb-item.self .lb-name::after{content:'YOU';display:inline-block;background:var(--tab-active);color:white;font-size:.55rem;font-weight:800;padding:2px 7px;border-radius:6px;margin-left:6px;letter-spacing:.5px;vertical-align:middle;line-height:1.1;font-family:'Anek Bangla',sans-serif}
+.lb-rank{width:32px;height:32px;border-radius:10px;background:var(--app-card-bg);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:var(--app-text-primary);flex-shrink:0;border:1px solid var(--app-border)}
+.lb-item.diamond .lb-rank{background:linear-gradient(135deg,#6366F1,#4F46E5);color:white;border-color:#4338CA}
+.lb-item.gold .lb-rank{background:linear-gradient(135deg,#F59E0B,#D97706);color:white;border-color:#B45309}
+.lb-item.silver .lb-rank{background:linear-gradient(135deg,#94A3B8,#64748B);color:white;border-color:#475569}
+.lb-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;background:var(--app-card-bg);flex-shrink:0;border:2px solid var(--app-border);display:flex;align-items:center;justify-content:center}
+.lb-item.diamond .lb-avatar{border-color:#6366F1}
+.lb-item.gold .lb-avatar{border-color:#F59E0B}
+.lb-item.silver .lb-avatar{border-color:#94A3B8}
+.lb-avatar img{width:100%;height:100%;object-fit:cover}
+.lb-avatar svg{width:18px;height:18px;stroke:var(--app-text-secondary);fill:none}
+.lb-info{flex:1;min-width:0}
+.lb-name{font-size:.84rem;font-weight:700;color:var(--app-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px;flex-wrap:nowrap}
+.lb-name>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.lb-item.diamond .lb-name{color:#312E81}
+[data-theme="dark"] .lb-item.diamond .lb-name{color:#E0E7FF}
+.lb-item.gold .lb-name{color:#78350F}
+[data-theme="dark"] .lb-item.gold .lb-name{color:#FEF3C7}
+.lb-item.silver .lb-name{color:#334155}
+[data-theme="dark"] .lb-item.silver .lb-name{color:#F1F5F9}
+.lb-class{font-size:.65rem;font-weight:600;color:var(--app-text-secondary);opacity:.9}
+.lb-item.diamond .lb-class{color:#4338CA}
+[data-theme="dark"] .lb-item.diamond .lb-class{color:#C7D2FE}
+.lb-item.gold .lb-class{color:#92400E}
+[data-theme="dark"] .lb-item.gold .lb-class{color:#FDE68A}
+.lb-percent{font-size:.88rem;font-weight:800;color:var(--tab-active);flex-shrink:0;padding-left:6px}
+.lb-item.diamond .lb-percent{color:#4F46E5}
+[data-theme="dark"] .lb-item.diamond .lb-percent{color:#A5B4FC}
+.lb-item.gold .lb-percent{color:#B45309}
+[data-theme="dark"] .lb-item.gold .lb-percent{color:#FDE68A}
+.lb-crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#F59E0B,#D97706);color:white;font-size:.6rem;font-weight:800;padding:2px 10px;border-radius:10px;box-shadow:0 2px 6px rgba(245,158,11,.5);display:flex;align-items:center;gap:3px;white-space:nowrap;z-index:5}
+.lb-crown svg{width:10px;height:10px;stroke:currentColor;fill:currentColor;stroke-width:1}
+.lb-my-rank-note{background:var(--app-hover-bg);border:1.5px dashed var(--tab-active);border-radius:12px;padding:10px 14px;font-size:.76rem;color:var(--app-text-primary);text-align:center;margin:4px 0;font-weight:700}
+.lb-separator{text-align:center;font-size:.75rem;color:var(--app-text-secondary);margin:6px 0;font-weight:700;letter-spacing:3px}
+.lb-empty{text-align:center;padding:40px 20px;color:var(--app-text-secondary);font-size:.85rem;font-weight:600}
+.lb-empty svg{width:44px;height:44px;stroke:currentColor;fill:none;opacity:.35;margin-bottom:10px;stroke-width:1.6}
+.subject-progress-card{background:var(--app-hover-bg);border-radius:12px;padding:11px;margin-bottom:10px;border:1px solid var(--app-border)}
+.subject-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;gap:8px}
+.subject-title{font-weight:650;font-size:.82rem}
+.subject-stats{font-size:.7rem;background:var(--app-card-bg);padding:3px 8px;border-radius:20px;border:1px solid var(--app-border);white-space:nowrap}
+.progress-bar-container{width:100%;height:7px;background:var(--app-border);border-radius:20px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--app-progress-fill);border-radius:20px;width:0%;transition:width .3s ease}
+.progress-percent{font-size:.75rem;font-weight:600;text-align:right;margin-top:4px}
+.share-progress-btn{width:100%;padding:12px;background:linear-gradient(135deg,#3B82F6,#7C3AED,#EC4899);color:white;border:none;border-radius:12px;font-weight:700;font-size:.88rem;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;cursor:pointer;font-family:inherit;transition:transform .2s;box-shadow:0 4px 12px rgba(124,58,237,.35)}
+.share-progress-btn:active{transform:scale(.98)}
+.share-progress-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2}
+.settings-tab-nav{display:flex;background:var(--app-progress-bg);padding:4px;border-radius:12px;margin-bottom:16px;gap:2px}
+.settings-tab-btn{flex:1;padding:8px 4px;border:none;background:transparent;font-family:inherit;font-size:.72rem;font-weight:600;color:var(--app-text-secondary);border-radius:8px;cursor:pointer;white-space:nowrap}
+.settings-tab-btn.active{background:var(--app-card-bg);color:#4F46E5}
+.settings-tab-content{display:none;text-align:left;padding:4px 2px}
+.settings-tab-content.active{display:block}
+.order-item{display:flex;align-items:center;gap:8px;background:var(--app-hover-bg);border:1px solid var(--app-border);border-radius:10px;padding:8px 10px;margin-bottom:6px}
+.order-num{width:22px;height:22px;border-radius:6px;background:var(--tab-active);color:white;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.order-name{flex:1;font-size:.78rem;font-weight:600;color:var(--app-text-primary);line-height:1.2;word-break:break-word}
+.order-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--app-border);background:var(--app-card-bg);color:var(--app-text-primary);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:.7rem;transition:all .15s}
+.order-btn:active{transform:scale(.9)}
+.order-btn:disabled{opacity:.3;cursor:not-allowed}
+.order-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5}
+.timer-section-label{font-size:.78rem;font-weight:700;color:var(--app-text-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.timer-section-label svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+.timer-mode-toggle{display:flex;background:var(--app-progress-bg);border-radius:10px;padding:3px;margin-bottom:12px;gap:2px}
+.mode-btn{flex:1;padding:8px 4px;border:none;background:transparent;font-family:inherit;font-size:.78rem;font-weight:600;color:var(--app-text-secondary);border-radius:8px;cursor:pointer}
+.mode-btn.active{background:var(--app-card-bg);color:var(--tab-active);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.timer-status-display{margin-top:12px;padding:10px 12px;background:var(--app-hover-bg);border:1px solid var(--app-border);border-radius:10px;font-size:.78rem;font-weight:600;color:var(--app-text-primary);display:none;text-align:center}
+.timer-status-display.active{display:block}
+.timer-status-display.running{border-color:var(--tab-active);color:var(--tab-active)}
+.timer-status-display.expired{border-color:#F59E0B;color:#F59E0B;background:rgba(245,158,11,.1)}
+.settings-icon-row{display:flex;gap:10px;margin-bottom:16px;justify-content:center}
+.settings-icon-btn{flex:1;padding:12px;background:var(--app-progress-bg);color:var(--app-text-primary);border:1px solid var(--app-border);border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.settings-icon-btn:hover{background:var(--app-hover-bg);border-color:var(--tab-active);color:var(--tab-active)}
+.settings-icon-btn:active{transform:scale(.96)}
+.settings-icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+.avatar-upload-area{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.avatar-preview{width:50px;height:50px;border-radius:50%;background:var(--app-progress-bg);display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid var(--app-border);flex-shrink:0}
+.avatar-preview img{width:100%;height:100%;object-fit:cover}
+.avatar-preview svg{width:24px;height:24px;stroke:var(--app-text-secondary);fill:none}
+.developer-profile-card{background:var(--app-hover-bg);border-radius:24px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:12px;border:1px solid var(--app-border);margin-bottom:16px}
+.developer-avatar{width:70px;height:70px;border-radius:50%;overflow:hidden;border:3px solid var(--tab-active)}
+.developer-avatar img{width:100%;height:100%;object-fit:cover}
+.developer-name-wrapper{display:flex;align-items:center;gap:6px;font-size:1rem;font-weight:700}
+.verified-badge{width:18px;height:18px;background:#1DA1F2;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.verified-badge svg{width:12px;height:12px;stroke:white;fill:white}
+.developer-title{font-size:.8rem;color:var(--app-text-secondary);margin-top:-8px}
+.contact-icons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin-top:8px}
+.contact-icon{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 4px;border-radius:12px;background:var(--app-card-bg);border:1px solid var(--app-border);text-decoration:none;color:var(--app-text-primary);transition:all .2s}
+.contact-icon:hover{background:var(--tab-active);color:white;border-color:var(--tab-active)}
+.contact-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.contact-icon span{font-size:.6rem;font-weight:600;line-height:1.1;text-align:center}
+.restore-code-display{background:linear-gradient(135deg,#4F46E5,#818CF8);color:white;font-size:2rem;font-weight:800;letter-spacing:.5rem;padding:16px;border-radius:14px;margin:12px 0 16px;text-align:center;box-shadow:0 4px 12px rgba(79,70,229,.35);font-family:'Anek Bangla',monospace}
+.restore-code-input{text-align:center;font-size:1.4rem;letter-spacing:.5rem;font-weight:700;font-family:'Anek Bangla',monospace}
+.restore-error{color:#EF4444;font-size:.78rem;font-weight:600;margin-bottom:10px;display:none}
+.restore-list{max-height:45vh;overflow-y:auto;text-align:left;margin-bottom:12px}
+.restore-item{display:flex;align-items:center;gap:8px;background:var(--green-bg-light);border-left:3px solid var(--green-primary);border-radius:8px;padding:9px 10px;margin-bottom:6px}
+.restore-text{flex:1;font-size:.8rem;font-weight:600;color:var(--green-primary);line-height:1.3;word-break:break-word}
+.restore-btn{background:var(--green-primary);color:white;border:none;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:transform .15s}
+.restore-btn:active{transform:scale(.92)}
+.restore-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.share-inst-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:2000;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s}
+.share-inst-modal.active{opacity:1;visibility:visible}
+.inst-card{background:white;border-radius:20px;padding:20px;width:100%;max-width:380px;text-align:center;transform:translateY(20px);transition:transform .3s}
+.share-inst-modal.active .inst-card{transform:translateY(0)}
+.inst-img-container{width:100%;height:200px;background:#f0f0f0;border-radius:12px;margin-bottom:15px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.inst-img-container img{width:100%;height:100%;object-fit:cover}
+.inst-title{font-size:1rem;font-weight:700;color:#333;margin-bottom:10px}
+.inst-desc{font-size:.85rem;color:#666;margin-bottom:20px;line-height:1.55}
+.inst-join-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:#1877F2;color:white;text-decoration:none;border-radius:10px;font-weight:600;margin-bottom:10px;transition:background .2s;font-size:.88rem}
+.inst-join-btn:active{background:#145dbf}
+.inst-join-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2}
+.inst-ok-btn{width:100%;padding:10px;background:transparent;border:1px solid #ddd;border-radius:10px;font-weight:600;color:#555;cursor:pointer;font-family:inherit}
+.result-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,.95);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:2000;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s;overflow-y:auto}
+.result-modal.active{opacity:1;visibility:visible}
+.result-container{width:100%;max-width:420px;text-align:center;margin:auto}
+.result-img-wrapper{width:100%;border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4);margin-bottom:14px;background:#F8FAFC}
+.result-img-wrapper img{width:100%;display:block}
+.result-actions{display:flex;gap:10px;margin-bottom:12px}
+.result-share-btn,.result-download-btn{flex:1;padding:13px;border-radius:14px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;border:none;transition:transform .15s}
+.result-share-btn{background:linear-gradient(135deg,#4F46E5,#7C3AED);color:white;box-shadow:0 6px 18px rgba(79,70,229,.45)}
+.result-download-btn{background:rgba(255,255,255,.12);color:white;border:1.5px solid rgba(255,255,255,.28)}
+.result-share-btn:active,.result-download-btn:active{transform:scale(.96)}
+.result-share-btn svg,.result-download-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.result-close-btn{background:transparent;border:1.5px solid rgba(255,255,255,.3);color:white;padding:11px 40px;border-radius:30px;font-weight:600;cursor:pointer;font-family:inherit;font-size:.88rem;transition:all .2s}
+.result-close-btn:active{background:rgba(255,255,255,.1)}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text-main);color:var(--bg-color);padding:10px 20px;border-radius:30px;font-size:.85rem;opacity:0;transition:all .4s;z-index:2000;max-width:85%;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.app-loader{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--app-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:3000;gap:20px;transition:opacity .3s}
+.app-loader.hidden{opacity:0;pointer-events:none}
+.app-loader img{width:112px;height:112px;object-fit:contain;filter:drop-shadow(0 8px 20px rgba(79,70,229,.25));animation:logoPulse 1.6s ease-in-out infinite;decoding:async}
+@keyframes logoPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.9}}
+.app-loader .spinner{width:28px;height:28px;border-width:3px}
+.app-loader-text{font-size:.82rem;font-weight:600;color:var(--app-text-secondary);letter-spacing:.4px}
+.info-note{font-size:.68rem;color:var(--app-text-secondary);margin-bottom:10px;line-height:1.5;display:flex;align-items:flex-start;gap:6px}
+.info-note svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;margin-top:2px}
+@media (max-width:360px){.subject-grid{grid-template-columns:1fr}.contact-icons{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:480px){.app-container{padding:10px;gap:8px}.countdown-timer{font-size:1.15rem}.auth-box{padding:18px 16px}.auth-brand-logo{width:64px;height:64px}.auth-brand-name{font-size:1.4rem}}
+</style>
+</head>
+<body>
+
+<div class="app-loader" id="app-loader">
+    <img src="https://myimgs.org/storage/images/45413/file_00000000f7c4821188e00c78df9971ed.png" alt="syllabo" decoding="async" fetchpriority="high">
+    <div class="spinner"></div>
+    <div class="app-loader-text" id="loader-text">লোড হচ্ছে...</div>
+</div>
+
+<div class="app-container" id="mainContainer" onclick="handleGlobalTap(event)">
+    <div class="top-section-wrapper">
+        <header class="countdown-section" id="countdown-section" style="display:none;">
+            <div class="countdown-title" id="countdown-title">টাইমার</div>
+            <div class="countdown-timer" id="countdown-timer-content"></div>
+        </header>
+        <div class="merged-header-section">
+            <div class="header-top-row">
+                <div class="user-info-mini" id="userInfoClickable" onclick="onProfileClick(event)">
+                    <div class="user-avatar-mini" id="avatarDisplayMini">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <div class="user-name-mini">
+                        <span id="userNameSpanMini">পরীক্ষার্থী</span>
+                        <span id="userClassSpanMini">HSC'28</span>
+                    </div>
+                    <div class="profile-hint-bubble" id="profileHint">এখানে ক্লিক করে লগইন করুন</div>
+                </div>
+                <div class="header-actions">
+                    <div class="offline-indicator" id="offline-indicator" title="Offline">
+                        <svg viewBox="0 0 24 24"><line x1="2" y1="2" x2="22" y2="22"></line><path d="M8.5 16.5a5 5 0 0 1 7 0"></path><path d="M2 8.82a15 15 0 0 1 4.17-2.65"></path><path d="M10.66 5c4.01-.36 8.14.9 11.34 3.76"></path><path d="M16.85 11.25a10 10 0 0 1 2.22 1.68"></path><path d="M5 12.55a11 11 0 0 1 5.17-2.39"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                    </div>
+                    <button class="notif-btn" id="notification-btn" onclick="openNotificationPanel()" aria-label="Notifications">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span class="notif-dot" id="notif-dot">0</span>
+                    </button>
+                    <div class="badge-summary">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span id="progress-percent-text">0%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="badge-grid-wrapper">
+                <div class="badge-row" id="badge-row-1"></div>
+                <div class="badge-row" id="badge-row-2"></div>
+                <div class="fluid-progress-container"><div class="fluid-progress-fill" id="fluid-progress-fill"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-section-wrapper">
+        <div class="nav-header" id="nav-header">
+            <button class="back-btn" id="back-btn" onclick="handleBackBtn()" aria-label="Back">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <h2 class="nav-title" id="nav-title"></h2>
+            <button class="nav-settings-btn" id="nav-settings-btn" onclick="openRestoreModal()" aria-label="Restore">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 4 3 9 8 9"></polyline></svg>
+            </button>
+        </div>
+
+        <main class="dashboard-sections">
+            <section id="home-view" class="content-section active">
+                <div id="suggestion-container"></div>
+                <div class="subject-grid" id="subject-grid"></div>
+            </section>
+
+            <section id="subject-view" class="content-section">
+                <div class="card"><div class="card-content"><ul class="topic-list" id="chapter-list"></ul></div></div>
+            </section>
+
+            <section id="leaderboard-view" class="content-section">
+                <div class="lb-page">
+                    <div class="lb-page-header">
+                        <div class="lb-page-logo-wrap">
+                            <img src="https://myimgs.org/storage/images/45413/file_00000000f7c4821188e00c78df9971ed.png" alt="syllabo" decoding="async" loading="eager" fetchpriority="high">
+                        </div>
+                        <div class="lb-page-title" id="lb-page-title-text">লিডারবোর্ড</div>
+                        <div class="lb-page-batch" id="lb-page-batch">HSC'28</div>
+                        <div class="lb-visit-counter">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            <span id="lb-visit-count">০</span>
+                        </div>
+                    </div>
+                    <div class="lb-page-tabs">
+                        <button class="lb-page-tab active" data-lb-tab="ranking" id="lb-tab-btn-ranking">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>
+                            <span>র‍্যাংকিং</span>
+                        </button>
+                        <button class="lb-page-tab" data-lb-tab="progress" id="lb-tab-btn-progress">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3v18"></path><rect x="7" y="7" width="4" height="12"></rect><rect x="13" y="4" width="4" height="15"></rect><rect x="19" y="9" width="4" height="10"></rect></svg>
+                            <span>অগ্রগতি</span>
+                        </button>
+                    </div>
+                    <div id="lb-tab-ranking">
+                        <div class="lb-my-rank-note" id="lb-my-rank-note" style="display:none;"></div>
+                        <div class="lb-list" id="lb-list"></div>
+                    </div>
+                    <div id="lb-tab-progress" style="display:none;">
+                        <div id="subjectProgressListDynamic"></div>
+                        <button class="share-progress-btn" onclick="openShareInstruction()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                            <span>অগ্রগতি কার্ড তৈরি করুন</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="auth-modal">
+    <div class="auth-box">
+        <button class="auth-close-x" onclick="hideAuthModal()" aria-label="Close">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <div class="auth-brand">
+            <img class="auth-brand-logo" src="https://myimgs.org/storage/images/45413/file_00000000f7c4821188e00c78df9971ed.png" alt="syllabo" decoding="async" fetchpriority="high">
+            <div class="auth-brand-name">syllabo</div>
+        </div>
+        <div class="auth-subtitle">HSC প্রস্তুতির স্মার্ট সঙ্গী</div>
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-auth-tab="login" id="auth-tab-login">লগ ইন</button>
+            <button class="auth-tab" data-auth-tab="register" id="auth-tab-register">রেজিস্ট্রেশন</button>
+        </div>
+        <div class="auth-error" id="auth-error"></div>
+        <div class="auth-success" id="auth-success"></div>
+        <form class="auth-form" id="login-form" onsubmit="handleLogin(event)">
+            <label class="auth-label">ইমেইল</label>
+            <input type="email" id="login-email" class="input-box" placeholder="you@example.com" autocomplete="email" required>
+            <label class="auth-label">পাসওয়ার্ড</label>
+            <input type="password" id="login-password" class="input-box" placeholder="••••••••" autocomplete="current-password" required>
+            <button type="submit" class="btn-submit" id="login-submit-btn">লগ ইন করুন</button>
+        </form>
+        <form class="auth-form" id="register-form" style="display:none;" onsubmit="handleRegister(event)">
+            <label class="auth-label">পূর্ণ নাম *</label>
+            <input type="text" id="reg-name" class="input-box" placeholder="আপনার পূর্ণ নাম" autocomplete="name" required>
+            <label class="auth-label">শ্রেণি *</label>
+            <div class="custom-dropdown" id="class-dropdown-wrapper">
+                <div class="dropdown-trigger placeholder" id="class-dropdown-trigger" onclick="toggleClassDropdown(event)">
+                    <span id="class-dropdown-label">শ্রেণি নির্বাচন করুন</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="dropdown-menu" id="class-dropdown-menu">
+                    <div class="dropdown-item" data-value="HSC'27" onclick="selectClass('HSC\'27')">HSC'27</div>
+                    <div class="dropdown-item" data-value="HSC'28" onclick="selectClass('HSC\'28')">HSC'28</div>
+                </div>
+            </div>
+            <label class="auth-label">ইমেইল *</label>
+            <input type="email" id="reg-email" class="input-box" placeholder="you@example.com" autocomplete="email" required>
+            <label class="auth-label">শিক্ষাপ্রতিষ্ঠানের EIIN নম্বর (ঐচ্ছিক)</label>
+            <input type="text" id="reg-eiin" class="input-box" placeholder="যেমন: 123456" inputmode="numeric">
+            <label class="auth-label">অতিরিক্ত তথ্য (ঐচ্ছিক)</label>
+            <input type="text" id="reg-extra" class="input-box" placeholder="স্কুলের নাম, ঠিকানা ইত্যাদি">
+            <label class="auth-label">পাসওয়ার্ড *</label>
+            <input type="password" id="reg-password" class="input-box" placeholder="কমপক্ষে ৬ অক্ষর" autocomplete="new-password" minlength="6" required>
+            <div class="checkbox-row">
+                <input type="checkbox" id="reg-terms" required>
+                <label for="reg-terms">আমি <b>syllabo HSC</b>-এর নিয়ম ও শর্তাবলী মেনে নিচ্ছি।</label>
+            </div>
+            <button type="submit" class="btn-submit" id="register-submit-btn">রেজিস্ট্রেশন করুন</button>
+        </form>
+    </div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div class="modal-overlay" id="notification-modal">
+    <div class="modal-box">
+        <div class="modal-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <span>নোটিফিকেশন</span>
+        </div>
+        <div class="notif-list" id="notif-list"></div>
+        <button class="btn-submit" style="background:#9CA3AF;" onclick="closeNotificationPanel()">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="modal-overlay" id="profile-modal">
+    <div class="modal-box">
+        <div class="modal-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>সেটিংস</span>
+        </div>
+        <div class="settings-tab-nav">
+            <button class="settings-tab-btn active" data-settings-tab="tab2">বিষয়ক্রম</button>
+            <button class="settings-tab-btn" data-settings-tab="tab3">টাইমার</button>
+            <button class="settings-tab-btn" data-settings-tab="tab4">অন্যান্য</button>
+        </div>
+        <div id="settings-tab2" class="settings-tab-content active">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                <span style="font-weight:600;font-size:.9rem;">বিষয়ের ক্রম পরিবর্তন করুন</span>
+            </div>
+            <p style="font-size:.72rem;color:var(--app-text-secondary);margin-bottom:10px;line-height:1.5;">উপর-নিচ তীর চিহ্ন দিয়ে বিষয়ের ক্রম পরিবর্তন করুন।</p>
+            <div id="subject-order-list"></div>
+        </div>
+        <div id="settings-tab3" class="settings-tab-content">
+            <div class="timer-section-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+                <span>কাস্টম টাইমার</span>
+            </div>
+            <label style="font-size:.78rem;font-weight:600;display:block;margin-bottom:5px;color:var(--app-text-secondary);">টাইমার টাইটেল</label>
+            <input id="timer-title-input" type="text" class="input-box" placeholder="যেমন: পড়ার সময়, বিরতি...">
+            <label style="font-size:.78rem;font-weight:600;display:block;margin-bottom:5px;color:var(--app-text-secondary);">মোড নির্বাচন</label>
+            <div class="timer-mode-toggle">
+                <button class="mode-btn active" data-mode="hours" id="mode-hours-btn">ঘন্টা থেকে</button>
+                <button class="mode-btn" data-mode="date" id="mode-date-btn">নির্দিষ্ট দিন/সময়</button>
+            </div>
+            <div id="timer-hours-mode"><input id="timer-hours-input" type="number" min="1" max="9999" class="input-box" placeholder="কত ঘন্টা? (যেমন: 48)"></div>
+            <div id="timer-date-mode" style="display:none;"><input id="timer-date-input" type="datetime-local" class="input-box"></div>
+            <button class="btn-submit" onclick="startTimerFromSettings()">টাইমার চালু করুন</button>
+            <button class="btn-submit" style="background:#EF4444;margin-top:8px;" onclick="stopTimerFromSettings()">টাইমার বন্ধ করুন</button>
+            <div class="timer-status-display" id="timer-status-display"></div>
+        </div>
+        <div id="settings-tab4" class="settings-tab-content">
+            <div class="settings-icon-row">
+                <button class="settings-icon-btn" onclick="toggleLanguage()" title="Language" aria-label="Language">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </button>
+                <button class="settings-icon-btn" onclick="toggleTheme()" title="Theme" aria-label="Theme">
+                    <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
+            <div style="margin-bottom:15px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span style="font-weight:600;font-size:.85rem;">প্রোফাইল</span>
+                </div>
+                <input type="text" id="profile-name-input" class="input-box" placeholder="আপনার নাম লিখুন">
+                <div class="avatar-upload-area">
+                    <div class="avatar-preview" id="avatarPreview"></div>
+                    <input type="url" id="avatar-url-input" class="input-box" placeholder="ছবির লিংক (https://...)" style="margin-bottom:0;flex:1;font-size:.78rem;padding:9px 10px;">
+                </div>
+                <div class="info-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span>প্রোফাইল ছবি হিসেবে যেকোনো ইমেজের সরাসরি লিংক ব্যবহার করুন।</span>
+                </div>
+                <button class="btn-submit" id="save-profile-btn">প্রোফাইল সংরক্ষণ</button>
+            </div>
+            <div>
+                <div class="developer-profile-card">
+                    <div class="developer-avatar"><img src="https://i.postimg.cc/4Nm3sVGc/20260304-051242.jpg" alt="Dev" decoding="async" loading="lazy"></div>
+                    <div class="developer-name-wrapper">মোঃ খালিদ সাইফুল্লাহ্ <span class="verified-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></span></div>
+                    <div class="developer-title">লিড ডেভেলপার</div>
+                    <div class="contact-icons">
+                        <a href="https://www.facebook.com/khalid6x" target="_blank" class="contact-icon" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                            <span>Facebook</span>
+                        </a>
+                        <a href="https://www.facebook.com/groups/ssc26.trikso" target="_blank" class="contact-icon" aria-label="Facebook Group">
+                            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>FB Group</span>
+                        </a>
+                        <a href="https://wa.me/8801736711564" target="_blank" class="contact-icon" aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a1.999 1.999 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            <span>WhatsApp</span>
+                        </a>
+                        <a href="https://chat.whatsapp.com/CaOSuz5NNEjJzJgPYy1Lel" target="_blank" class="contact-icon" aria-label="WhatsApp Group">
+                            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>WA Group</span>
+                        </a>
+                        <a href="https://chithi.me/khalid6x" target="_blank" class="contact-icon" aria-label="Chithi">
+                            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            <span>Chithi</span>
+                        </a>
+                        <a href="mailto:khalid.edu6@yahoo.com" class="contact-icon" aria-label="Email">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path></svg>
+                            <span>Email</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn-submit" id="cancel-profile-btn" style="background:#9CA3AF;margin-top:12px;">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- RESTORE -->
+<div class="modal-overlay" id="restore-modal">
+    <div class="modal-box">
+        <div id="restore-step-code">
+            <div class="modal-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 4 3 9 8 9"></polyline></svg>
+                <span>ভুলে কনফার্ম করা ফিরিয়ে আনুন</span>
+            </div>
+            <p style="font-size:.78rem;color:var(--app-text-secondary);margin-bottom:6px;line-height:1.5;">নিচে দেখানো ৪ সংখ্যার কোডটি হুবহু লিখুন:</p>
+            <div class="restore-code-display" id="restore-code-display">০০০০</div>
+            <div class="restore-error" id="restore-code-error">ভুল কোড! নতুন কোড দেওয়া হয়েছে।</div>
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="4" class="input-box restore-code-input" id="restore-code-input" placeholder="----">
+            <button class="btn-submit" onclick="verifyRestoreCode()">যাচাই করুন</button>
+            <button class="btn-submit" style="background:#9CA3AF;margin-top:8px;" onclick="closeRestoreModal()">বন্ধ করুন</button>
+        </div>
+        <div id="restore-step-list" style="display:none;">
+            <div class="modal-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 4 3 9 8 9"></polyline></svg>
+                <span>ভুলে কনফার্ম করা ফিরিয়ে আনুন</span>
+            </div>
+            <p style="font-size:.75rem;color:var(--app-text-secondary);margin-bottom:12px;line-height:1.5;">সম্পন্ন হয়েছে এমন চ্যাপ্টার আবার তালিকায় ফিরিয়ে আনতে "ফিরাও" বাটনে ক্লিক করুন।</p>
+            <div class="restore-list" id="restore-list"></div>
+            <button class="btn-submit" onclick="closeRestoreModal()" style="background:#9CA3AF;">বন্ধ করুন</button>
+        </div>
+    </div>
+</div>
+
+<!-- SHARE INSTRUCTION -->
+<div class="share-inst-modal" id="share-instruction-modal">
+    <div class="inst-card">
+        <div class="inst-img-container">
+            <img src="https://myimgs.org/storage/images/45472/Fds.webp" alt="Instruction" decoding="async" loading="eager" fetchpriority="high">
+        </div>
+        <h3 class="inst-title">প্রোগ্রেস কার্ড তৈরি করুন</h3>
+        <p class="inst-desc">আপনার অগ্রগতির কার্ড দেখতে "ঠিক আছে" ক্লিক করুন। এরপর <b>শেয়ার</b> বাটনে ক্লিক করলে ছবিটি সরাসরি WhatsApp, Messenger, Facebook সহ যেকোনো প্ল্যাটফর্মে শেয়ার করতে পারবেন এবং ছবিটি অটোমেটিক গ্যালারিতেও সেভ হয়ে যাবে।</p>
+        <a href="https://www.facebook.com/groups/ssc26.trikso" target="_blank" class="inst-join-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>অফিসিয়াল গ্রুপে শেয়ার করুন</span>
+        </a>
+        <button class="inst-ok-btn" onclick="showResultCard()">ঠিক আছে</button>
+    </div>
+</div>
+
+<!-- RESULT CARD -->
+<div class="result-modal" id="result-display-modal">
+    <div class="result-container">
+        <div class="result-img-wrapper">
+            <img id="canvas-result-img" src="" alt="Progress Card" decoding="async">
+        </div>
+        <div class="result-actions">
+            <button class="result-share-btn" onclick="shareResultImage()">
+                <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                <span id="share-btn-label">শেয়ার করুন</span>
+            </button>
+            <button class="result-download-btn" onclick="downloadResultImage()">
+                <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span id="download-btn-label">ডাউনলোড</span>
+            </button>
+        </div>
+        <button class="result-close-btn" onclick="closeResultModal()">বন্ধ করুন</button>
+    </div>
+</div>
+
+<div class="toast" id="toast-msg">মেসেজ</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+
+<script>
+const firebaseConfig={apiKey:"AIzaSyB851kUS7XyEn33l9Ml_9wNTBDMjjoiMoY",authDomain:"syllabo-hsc.firebaseapp.com",projectId:"syllabo-hsc",storageBucket:"syllabo-hsc.firebasestorage.app",messagingSenderId:"765044086139",appId:"1:765044086139:web:0625806034f1b90a7d99de",measurementId:"G-VLZRG25BHL"};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+const db=firebase.firestore();
+const FieldValue=firebase.firestore.FieldValue;
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(e=>console.warn(e));
+db.enablePersistence({synchronizeTabs:true}).catch(err=>console.warn('Persistence:',err.code));
+try{if(firebase.analytics)firebase.analytics();}catch(e){}
+const LOGO_URL="https://myimgs.org/storage/images/45413/file_00000000f7c4821188e00c78df9971ed.png";
+const FONT_FAMILY="'Anek Bangla', sans-serif";
+const STORAGE_KEY='syllabusProgress_v13';
+const SUBJECT_ORDER_KEY='subjectOrder_v1';
+const TIMER_KEY='timerSettings_v2';
+const SUGGESTION_KEY='dailySuggestion_v1';
+const PROFILE_KEY='userProfile_v9';
+const NOTIF_READ_KEY='notifReadIds_v1';
+const CACHED_AUTH_KEY='cachedAuth_v2';
+const HINT_KEY='profileHintShown_v1';
+const DEFAULT_SUBJECT_ORDER=["বাংলা ১ম পত্র","বাংলা ২য় পত্র","ইংরেজি ১ম পত্র","ইংরেজি ২য় পত্র","রসায়ন ১ম পত্র","রসায়ন ২য় পত্র","পদার্থবিজ্ঞান ১ম পত্র","পদার্থবিজ্ঞান ২য় পত্র","উচ্চতর গণিত ১ম পত্র","উচ্চতর গণিত ২য় পত্র","জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)","জীববিজ্ঞান ২য় পত্র (প্রাণী)","তথ্য ও যোগাযোগ প্রযুক্তি"];
+const SUBJECT_FIXED={"বাংলা ১ম পত্র":"বাংলা ১ম পত্র","বাংলা ২য় পত্র":"বাংলা ২য় পত্র","ইংরেজি ১ম পত্র":"English 1st Paper","ইংরেজি ২য় পত্র":"English 2nd Paper"};
+const SUBJECT_EN_NAMES={"রসায়ন ১ম পত্র":"Chemistry 1st Paper","রসায়ন ২য় পত্র":"Chemistry 2nd Paper","পদার্থবিজ্ঞান ১ম পত্র":"Physics 1st Paper","পদার্থবিজ্ঞান ২য় পত্র":"Physics 2nd Paper","উচ্চতর গণিত ১ম পত্র":"Higher Math 1st Paper","উচ্চতর গণিত ২য় পত্র":"Higher Math 2nd Paper","জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)":"Biology 1st Paper (Botany)","জীববিজ্ঞান ২য় পত্র (প্রাণী)":"Biology 2nd Paper (Zoology)","তথ্য ও যোগাযোগ প্রযুক্তি":"ICT"};
+const BILINGUAL_SUBJECTS=["রসায়ন ১ম পত্র","রসায়ন ২য় পত্র","পদার্থবিজ্ঞান ১ম পত্র","পদার্থবিজ্ঞান ২য় পত্র","উচ্চতর গণিত ১ম পত্র","উচ্চতর গণিত ২য় পত্র","জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)","জীববিজ্ঞান ২য় পত্র (প্রাণী)","তথ্য ও যোগাযোগ প্রযুক্তি"];
+const SUBJECT_ICONS={"বাংলা ১ম পত্র":`<path d="M2.5 4.5h5.5A4 4 0 0 1 12 8.5v11a3 3 0 0 0-3-3H2.5z"/><path d="M21.5 4.5H16A4 4 0 0 0 12 8.5v11a3 3 0 0 1 3-3h6.5z"/><line x1="12" y1="8.5" x2="12" y2="19.5"/>`,"বাংলা ২য় পত্র":`<path d="M17.5 3.5 6.5 14.5 5 20l5.5-1.5L21.5 7.5z"/><path d="M3 21.5 7.5 17"/><path d="M12 6.5 15.5 10"/><path d="M9.5 14.5 6 11"/>`,"ইংরেজি ১ম পত্র":`<circle cx="12" cy="12" r="9.5"/><line x1="2.5" y1="12" x2="21.5" y2="12"/><path d="M12 2.5a15 15 0 0 1 4 9.5 15 15 0 0 1-4 9.5 15 15 0 0 1-4-9.5 15 15 0 0 1 4-9.5z"/>`,"ইংরেজি ২য় পত্র":`<path d="M21 14.5a2 2 0 0 1-2 2H7.5l-4.5 4V5.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="7.5" y1="8.5" x2="16.5" y2="8.5"/><line x1="7.5" y1="12.5" x2="13" y2="12.5"/>`,"রসায়ন ১ম পত্র":`<path d="M9.5 2.5h5"/><path d="M10.5 2.5v6L5.7 17.4A2.6 2.6 0 0 0 8 21.5h8a2.6 2.6 0 0 0 2.3-4.1L13.5 8.5v-6"/><line x1="7.6" y1="14.5" x2="16.4" y2="14.5"/><circle cx="10.4" cy="18" r="0.9"/><circle cx="13.9" cy="18.7" r="0.7"/>`,"রসায়ন ২য় পত্র":`<polygon points="12 2.6 20.2 7.3 20.2 16.7 12 21.4 3.8 16.7 3.8 7.3"/><circle cx="12" cy="12" r="2.4"/><line x1="12" y1="9.6" x2="12" y2="2.6"/><line x1="14.1" y1="13.2" x2="20.2" y2="16.7"/><line x1="9.9" y1="13.2" x2="3.8" y2="16.7"/>`,"পদার্থবিজ্ঞান ১ম পত্র":`<circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="10" ry="4.4"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(120 12 12)"/>`,"পদার্থবিজ্ঞান ২য় পত্র":`<polygon points="13 2 4.5 13.5 11 13.5 10 22 19.5 10.5 13 10.5 13 2"/>`,"উচ্চতর গণিত ১ম পত্র":`<rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/><line x1="15" y1="4" x2="15" y2="20"/><line x1="3" y1="12" x2="21" y2="12"/>`,"উচ্চতর গণিত ২য় পত্র":`<line x1="3" y1="3" x2="3" y2="21"/><line x1="3" y1="21" x2="21" y2="21"/><path d="M4.5 20C7 12 10 3.5 12 3.5S17 12 19.5 20"/><circle cx="12" cy="3.8" r="1"/>`,"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)":`<path d="M11 20.5A7 7 0 0 1 9.8 6.6C15.5 5.5 17 5 19 2.5c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21.5c0-3 1.85-5.4 5.08-6C9.5 15 12 13.5 13 12.5"/>`,"জীববিজ্ঞান ২য় পত্র (প্রাণী)":`<path d="M8 2.5c0 4.5 8 5.5 8 9.5s-8 5-8 9.5"/><path d="M16 2.5c0 4.5-8 5.5-8 9.5s8 5 8 9.5"/><line x1="9" y1="6.2" x2="15" y2="6.2"/><line x1="8.2" y1="12" x2="15.8" y2="12"/><line x1="9" y1="17.8" x2="15" y2="17.8"/>`,"তথ্য ও যোগাযোগ প্রযুক্তি":`<rect x="2" y="3" width="20" height="13.5" rx="2"/><path d="M8.5 20.5h7"/><path d="M12 16.5v4"/><path d="M6 7h5"/><path d="M6 10h9"/>`};
+const SUBJECT_COLORS={"বাংলা ১ম পত্র":"#EF4444","বাংলা ২য় পত্র":"#F97316","ইংরেজি ১ম পত্র":"#F59E0B","ইংরেজি ২য় পত্র":"#EAB308","রসায়ন ১ম পত্র":"#10B981","রসায়ন ২য় পত্র":"#14B8A6","পদার্থবিজ্ঞান ১ম পত্র":"#3B82F6","পদার্থবিজ্ঞান ২য় পত্র":"#6366F1","উচ্চতর গণিত ১ম পত্র":"#8B5CF6","উচ্চতর গণিত ২য় পত্র":"#A855F7","জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)":"#22C55E","জীববিজ্ঞান ২য় পত্র (প্রাণী)":"#84CC16","তথ্য ও যোগাযোগ প্রযুক্তি":"#0EA5E9"};
+function getSubjectIcon(s){const p=SUBJECT_ICONS[s]||`<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>`;return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;}
+function getSubjectColor(s){return SUBJECT_COLORS[s]||'#4F46E5';}
+function toBengaliNumber(n){const d=['০','১','২','৩','৪','৫','৬','৭','৮','৯'];return n.toString().split('').map(c=>d[c]!==undefined?d[c]:c).join('');}
+function formatNumber(n){return getLanguage()==='bn'?toBengaliNumber(n):n.toString();}
+function getLanguage(){return localStorage.getItem('appLanguage')||'bn';}
+function setLanguage(l){localStorage.setItem('appLanguage',l);}
+function showToast(msg){const el=document.getElementById('toast-msg');el.innerText=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2000);}
+function getTodayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function getShortDate(){const d=new Date();const dd=String(d.getDate()).padStart(2,'0');const mm=String(d.getMonth()+1).padStart(2,'0');return getLanguage()==='bn'?toBengaliNumber(dd)+'/'+toBengaliNumber(mm):dd+'/'+mm;}
+function escapeHtml(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function timeAgo(ts){if(!ts)return '';const d=ts.toDate?ts.toDate():new Date(ts);const diff=Date.now()-d.getTime();const s=Math.floor(diff/1000);const bn=getLanguage()==='bn';if(s<60)return bn?'এইমাত্র':'just now';const m=Math.floor(s/60);if(m<60)return bn?`${formatNumber(m)} মিনিট আগে`:`${m}m ago`;const h=Math.floor(m/60);if(h<24)return bn?`${formatNumber(h)} ঘণ্টা আগে`:`${h}h ago`;const dy=Math.floor(h/24);if(dy<30)return bn?`${formatNumber(dy)} দিন আগে`:`${dy}d ago`;const mo=Math.floor(dy/30);return bn?`${formatNumber(mo)} মাস আগে`:`${mo}mo ago`;}
+function getSubjectDisplayName(s){if(SUBJECT_FIXED[s])return SUBJECT_FIXED[s];if(getLanguage()==='en'&&SUBJECT_EN_NAMES[s])return SUBJECT_EN_NAMES[s];return s;}
+function getChapterDisplayName(sub,ch){if(!BILINGUAL_SUBJECTS.includes(sub))return ch;const m=ch.match(/^(.+?)\s*\((.+)\)\s*$/);if(!m)return ch;return getLanguage()==='en'?m[1].trim():m[2].trim();}
+
+const rawSyllabusData=[
+{subject:"বাংলা ১ম পত্র",chapter:"বাঙ্গালার নব্য লেখকদিগের প্রতি নিবেদন (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"অপরিচিতা (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"বিলাসী (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"গৃহ (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"আহ্বান (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"আমার পথ (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"মানব-কল্যাণ (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"মাসি-পিসি (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"বায়ান্নর দিনগুলো (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"রেইনকোট (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"নেকলেস (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"অর্ধাঙ্গী / সাহিত্যের খেলা (গদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"বিভীষণের প্রতি মেঘনাদ (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"সোনার তরী (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"বিদ্রোহী (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"প্রতিদান (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"সুচেতনা (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"তাহারেই পড়ে মনে (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"পদ্মা (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"১৮ বছর বয়স (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"ফেব্রুয়ারি ১৯৬৯ (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"আমি কিংবদন্তির কথা বলছি (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"নূরলদীনের কথা মনে পড়ে যায় (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"ছবি (পদ্য)"},{subject:"বাংলা ১ম পত্র",chapter:"লালসালু (সহপাঠ - উপন্যাস)"},{subject:"বাংলা ১ম পত্র",chapter:"সিরাজউদ্দৌলা (সহপাঠ - নাটক)"},
+{subject:"বাংলা ২য় পত্র",chapter:"বাংলা উচ্চারণের নিয়ম (ব্যাকরণ)"},{subject:"বাংলা ২য় পত্র",chapter:"বাংলা বানানের নিয়ম (ব্যাকরণ)"},{subject:"বাংলা ২য় পত্র",chapter:"বাংলা ভাষার ব্যাকরণিক শব্দশ্রেণি (ব্যাকরণ)"},{subject:"বাংলা ২য় পত্র",chapter:"বাংলা শব্দ গঠন: উপসর্গ, প্রত্যয় ও সমাস (ব্যাকরণ)"},{subject:"বাংলা ২য় পত্র",chapter:"বাক্য তত্ত্ব: বাক্যের শ্রেণিবিভাগ ও রূপান্তর (ব্যাকরণ)"},{subject:"বাংলা ২য় পত্র",chapter:"বাংলা ভাষার অপপ্রয়োগ ও শুদ্ধ প্রয়োগ (ব্যাকরণ)"},{subject:"বাংলা ২য় পত্র",chapter:"পারিভাষিক শব্দ অথবা অনুবাদ (নির্মিতি)"},{subject:"বাংলা ২য় পত্র",chapter:"দিনলিপি লিখন অথবা প্রতিবেদন তৈরি (নির্মিতি)"},{subject:"বাংলা ২য় পত্র",chapter:"বৈদ্যুতিন চিঠি (Email) অথবা আবেদনপত্র (নির্মিতি)"},{subject:"বাংলা ২য় পত্র",chapter:"সারাংশ/সারসংক্ষেপ অথবা ভাব-সম্প্রসারণ (নির্মিতি)"},{subject:"বাংলা ২য় পত্র",chapter:"সংলাপ লিখন অথবা ক্ষুদে গল্প রচনা (নির্মিতি)"},{subject:"বাংলা ২য় পত্র",chapter:"প্রবন্ধ-নিবন্ধ লিখন (রচনা) (নির্মিতি)"},
+{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: People or Institutions Making History"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Education and Life"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Youthful Achievers"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Human Relationship"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Art and Craft"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Tour and Travels"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Environment and Nature"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Myths and Literature"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Human Rights"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Diaspora"},{subject:"ইংরেজি ১ম পত্র",chapter:"Unit: Peace and Conflict"},{subject:"ইংরেজি ১ম পত্র",chapter:"Reading: Seen Comprehension Passages & Poems"},{subject:"ইংরেজি ১ম পত্র",chapter:"Reading: Unseen Comprehension Passages"},{subject:"ইংরেজি ১ম পত্র",chapter:"Reading: Information Transfer (Table Completion)"},{subject:"ইংরেজি ১ম পত্র",chapter:"Reading: Flow Chart Creation"},{subject:"ইংরেজি ১ম পত্র",chapter:"Reading: Summary Writing"},{subject:"ইংরেজি ১ম পত্র",chapter:"Reading: Cloze Test with Clues"},{subject:"ইংরেজি ১ম পত্র",chapter:"Reading: Cloze Test without Clues"},{subject:"ইংরেজি ১ম পত্র",chapter:"Reading: Rearranging Sentences"},{subject:"ইংরেজি ১ম পত্র",chapter:"Writing: Graph and Chart Interpretation & Analysis"},{subject:"ইংরেজি ১ম পত্র",chapter:"Writing: Story Completing (Based on hints)"},{subject:"ইংরেজি ১ম পত্র",chapter:"Writing: Informal Letters"},{subject:"ইংরেজি ১ম পত্র",chapter:"Writing: E-mail Writing"},
+{subject:"ইংরেজি ২য় পত্র",chapter:"Prepositions: Appropriate Prepositions & Use in Context"},{subject:"ইংরেজি ২য় পত্র",chapter:"Special Uses of Some Words and Phrases"},{subject:"ইংরেজি ২য় পত্র",chapter:"Completing Sentences (Conditionals, Infinitives, Gerunds, Clauses)"},{subject:"ইংরেজি ২য় পত্র",chapter:"Right Form of Verbs (Subject-Verb Agreement & Tenses)"},{subject:"ইংরেজি ২য় পত্র",chapter:"Narrative Style (Direct to Indirect Speech)"},{subject:"ইংরেজি ২য় পত্র",chapter:"Modifiers (Pre-modifiers & Post-modifiers)"},{subject:"ইংরেজি ২য় পত্র",chapter:"Sentence Connectors (Logical Linkers)"},{subject:"ইংরেজি ২য় পত্র",chapter:"Synonyms and Antonyms"},{subject:"ইংরেজি ২য় পত্র",chapter:"Punctuation (Capitalization & Marks)"},{subject:"ইংরেজি ২য় পত্র",chapter:"Formal Letters (Job Application with CV, Complaint, Inquiry)"},{subject:"ইংরেজি ২য় পত্র",chapter:"Paragraph Writing 1: Listing, Definition, Descriptive"},{subject:"ইংরেজি ২য় পত্র",chapter:"Paragraph Writing 2: Comparison-Contrast / Cause-Effect"},
+{subject:"রসায়ন ১ম পত্র",chapter:"Laboratory Safety and Safe Use (ল্যাবরেটরির নিরাপদ ব্যবহার)"},{subject:"রসায়ন ১ম পত্র",chapter:"Qualitative Chemistry (গুণগত রসায়ন)"},{subject:"রসায়ন ১ম পত্র",chapter:"Periodic Properties and Chemical Bonding of Elements (মৌলের পর্যায়বৃত্ত ধর্ম ও রাসায়নিক বন্ধন)"},{subject:"রসায়ন ১ম পত্র",chapter:"Chemical Changes (রাসায়নিক পরিবর্তন)"},{subject:"রসায়ন ১ম পত্র",chapter:"Economic Chemistry (কর্মমুখী রসায়ন)"},
+{subject:"রসায়ন ২য় পত্র",chapter:"Environmental Chemistry (পরিবেশ রসায়ন)"},{subject:"রসায়ন ২য় পত্র",chapter:"Organic Chemistry (জৈব রসায়ন)"},{subject:"রসায়ন ২য় পত্র",chapter:"Quantitative Chemistry (পরিমাণগত রসায়ন)"},{subject:"রসায়ন ২য় পত্র",chapter:"Electrochemistry (তড়িৎ রসায়ন)"},{subject:"রসায়ন ২য় পত্র",chapter:"Industrial Chemistry / Economic Chemistry (অর্থনৈতিক রসায়ন)"},
+{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Physical World and Measurement (ভৌত জগৎ ও পরিমাপ)"},{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Vectors (ভেক্টর)"},{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Dynamics (গতিবিদ্যা)"},{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Newtonian Mechanics (নিউটনীয় বলবিদ্যা)"},{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Work, Energy and Power (কাজ, শক্তি ও ক্ষমতা)"},{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Gravitation and Gravity (মহাকর্ষ ও অভিকর্ষ)"},{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Structural Properties of Matter (পদার্থের গাঠনিক ধর্ম)"},{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Periodic Motion (পর্যাবৃত্ত গতি)"},{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Waves (তরঙ্গ)"},{subject:"পদার্থবিজ্ঞান ১ম পত্র",chapter:"Ideal Gas and Kinetic Theory of Gases (আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব)"},
+{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Thermodynamics (তাপগতিবিদ্যা)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Static Electricity (স্থির তড়িৎ)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Current Electricity (চল তড়িৎ)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Magnetic Effect of Electric Current and Magnetism (তড়িৎ প্রবাহের চৌম্বক ক্রিয়া ও চৌম্বকত্ব)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Electromagnetic Induction and Alternating Current (তড়িৎ চৌম্বকীয় আবেশ ও পরিবর্তী প্রবাহ)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Geometrical Optics (জ্যামিতিক আলোকবিজ্ঞান)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Physical Optics (ভৌত আলোকবিজ্ঞান)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Introduction to Modern Physics (আধুনিক পদার্থবিজ্ঞানের সূচনা)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Atomic Model and Nuclear Physics (পরমাণুর মডেল ও নিউক্লিয়ার পদার্থবিজ্ঞান)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Semiconductor and Electronics (সেমিকন্ডাক্টর ও ইলেকট্রনিক্স)"},{subject:"পদার্থবিজ্ঞান ২য় পত্র",chapter:"Astronomy (জ্যোতির্বিজ্ঞান)"},
+{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Matrices and Determinants (ম্যাট্রিক্স ও নির্ণায়ক)"},{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Vectors (ভেক্টর)"},{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Straight Lines (সরলরেখা)"},{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Circles (বৃত্ত)"},{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Permutations and Combinations (বিন্যাস ও সমাবেশ)"},{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Trigonometric Ratios of Associated Angles (ত্রিকোণমিতিক অনুপাত)"},{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Trigonometric Functions (সংযুক্ত কোণের ত্রিকোণমিতিক অনুপাত)"},{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Functions and Graphs of Functions (ফাংশন ও ফাংশনের লেখচিত্র)"},{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Differentiation (অন্তরীকরণ)"},{subject:"উচ্চতর গণিত ১ম পত্র",chapter:"Integration (যৌগজীকরণ)"},
+{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Real Numbers and Linear Programming (বাস্তব সংখ্যা ও অসমতা)"},{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Linear Programming (রৈখিক প্রোগ্রামিং)"},{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Complex Numbers (জটিল সংখ্যা)"},{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Polynomials and Polynomial Equations (বহুপদী ও বহুপদী সমীকরণ)"},{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Binomial Expansion (দ্বিপদী বিস্তৃতি)"},{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Conics (কনিক)"},{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Inverse Trigonometric Functions and Trigonometric Equations (বিপরীত ত্রিকোণমিতিক ফাংশন ও ত্রিকোণমিতিক সমীকরণ)"},{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Statics (স্থিতিবিদ্যা)"},{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Dynamics / Motion of Particles in a Plane (সমতলে বস্তুকণার গতি)"},{subject:"উচ্চতর গণিত ২য় পত্র",chapter:"Measures of Dispersion and Probability (বিস্তার পরিমাপ ও সম্ভাবনা)"},
+{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Cell and its Structure (কোষ ও এর গঠন)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Cell Division (কোষ বিভাজন)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Cell Chemistry (কোষ রসায়ন)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Microorganisms (অণুজীব)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Algae and Fungi (শৈবাল ও ছত্রাক)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Bryophyta and Pteridophyta (ব্রায়োফাইটা ও টেরিডোফাইটা)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Gymnosperm and Angiosperm (নগ্নবীজী ও আবৃতবীজী উদ্ভিদ)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Tissue and Tissue System (টিস্যু ও টিস্যুতন্ত্র)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Plant Physiology (উদ্ভিদ শারীরতত্ত্ব)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Plant Reproduction (উদ্ভিদ প্রজনন)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Biotechnology (জীবপ্রযুক্তি)"},{subject:"জীববিজ্ঞান ১ম পত্র (উদ্ভিদ)",chapter:"Environment, Distribution and Conservation of Organisms (জীবের পরিবেশ, বিস্তার ও সংরক্ষণ)"},
+{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Animal Diversity and Classification (প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Animal Introduction (প্রাণীর পরিচিতি: হাইড্রা, ঘাসফড়িং, রুই মাছ)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Human Physiology: Digestion and Absorption (মানব শারীরতত্ত্ব: পরিপাক ও শোষণ)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Human Physiology: Blood and Circulation (মানব শারীরতত্ত্ব: রক্ত ও সংবহন)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Human Physiology: Breathing and Respiration (মানব শারীরতত্ত্ব: শ্বসন ও শ্বাসক্রিয়া)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Human Physiology: Excretion and Elimination (মানব শারীরতত্ত্ব: বর্জ্য ও নিষ্কাশন)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Human Physiology: Locomotion and Movement (মানব শারীরতত্ত্ব: চলন ও অঙ্গচালনা)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Human Physiology: Coordination and Control (মানব শারীরতত্ত্ব: সমন্বয় ও নিয়ন্ত্রণ)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Continuity of Animal Life (প্রাণীর জীবনের ধারাবাহিকতা)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Defense System of Human Body (মানবদেহের প্রতিরক্ষা)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Genetics and Evolution (জিনতত্ত্ব ও বিবর্তন)"},{subject:"জীববিজ্ঞান ২য় পত্র (প্রাণী)",chapter:"Animal Behavior (প্রাণীর আচরণ)"},
+{subject:"তথ্য ও যোগাযোগ প্রযুক্তি",chapter:"Information and Communication Technology: World and Bangladesh Perspective (তথ্য ও যোগাযোগ প্রযুক্তি: বিশ্ব ও বাংলাদেশ প্রেক্ষিত)"},{subject:"তথ্য ও যোগাযোগ প্রযুক্তি",chapter:"Communication Systems and Networking (কমিউনিকেশন সিস্টেমস ও নেটওয়ার্কিং)"},{subject:"তথ্য ও যোগাযোগ প্রযুক্তি",chapter:"Number Systems and Digital Devices (সংখ্যা পদ্ধতি ও ডিজিটাল ডিভাইস)"},{subject:"তথ্য ও যোগাযোগ প্রযুক্তি",chapter:"Introduction to Web Design and HTML (ওয়েব ডিজাইন পরিচিতি এবং এইচটিএমএল)"},{subject:"তথ্য ও যোগাযোগ প্রযুক্তি",chapter:"Programming Language (প্রোগ্রামিং ভাষা)"},{subject:"তথ্য ও যোগাযোগ প্রযুক্তি",chapter:"Database Management System (ডাটাবেজ ম্যানেজমেন্ট সিস্টেম)"}
+];
+
+let syllabusData=rawSyllabusData.map((item,i)=>({...item,id:`item_${i}`}));
+let currentSubject=null;
+let currentView='home';
+
+const STRINGS={bn:{closeBtn:'বন্ধ করুন',suggestionLabel:'আজকের সাজেশন',completeBtn:'সম্পন্ন',allDone:'সব চ্যাপ্টার সম্পন্ন হয়েছে! অভিনন্দন!',completedToast:'সফলভাবে সম্পন্ন হয়েছে!',restoredToast:'ফিরিয়ে আনা হয়েছে',timerStarted:'টাইমার চালু হয়েছে!',timerStopped:'টাইমার বন্ধ করা হয়েছে',timerEnded:'শেষ হয়েছে',timerDefault:'টাইমার',timerEndedStatus:'টাইমার শেষ হয়েছে (১ ঘন্টা পর স্বয়ংক্রিয় বন্ধ হবে)',saved:'সংরক্ষিত হয়েছে',orderUpdated:'ক্রম আপডেট হয়েছে',enterValidHours:'সঠিক ঘন্টা লিখুন',selectDateTime:'তারিখ ও সময় নির্বাচন করুন',futureTime:'ভবিষ্যতের সময় দিন',classRequired:'শ্রেণি নির্বাচন করুন',termsRequired:'শর্তাবলীতে সম্মতি দিন',nameRequired:'নাম দিন',loggingIn:'লগ ইন হচ্ছে...',registering:'রেজিস্ট্রেশন হচ্ছে...',lbTitle:'লিডারবোর্ড',lbRanking:'র‍্যাংকিং',lbProgress:'অগ্রগতি',lbYourRank:'আপনার অবস্থান',lbNoData:'এখনো কোনো ডেটা নেই',notifEmpty:'কোনো নোটিফিকেশন নেই',loading:'লোড হচ্ছে...',loginPrompt:'লগইন করুন',loginSubPrompt:'ট্যাপ করে অ্যাকাউন্ট খুলুন'},en:{closeBtn:'Close',suggestionLabel:"Today's Suggestion",completeBtn:'Complete',allDone:'All chapters completed! Congratulations!',completedToast:'Successfully completed!',restoredToast:'Restored',timerStarted:'Timer started!',timerStopped:'Timer stopped',timerEnded:'Ended',timerDefault:'Timer',timerEndedStatus:'Timer ended (auto-off in 1 hour)',saved:'Saved',orderUpdated:'Order updated',enterValidHours:'Enter valid hours',selectDateTime:'Select date & time',futureTime:'Set a future time',classRequired:'Please select a class',termsRequired:'Please accept terms',nameRequired:'Enter name',loggingIn:'Logging in...',registering:'Registering...',lbTitle:'Leaderboard',lbRanking:'Ranking',lbProgress:'Progress',lbYourRank:'Your Rank',lbNoData:'No data yet',notifEmpty:'No notifications',loading:'Loading...',loginPrompt:'Login',loginSubPrompt:'Tap to open account'}};
+function t(k){const l=getLanguage();return (STRINGS[l]&&STRINGS[l][k])||STRINGS.bn[k]||k;}
+
+function getCompletedIds(){try{return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'));}catch(e){return new Set();}}
+function setCompletedIds(s){localStorage.setItem(STORAGE_KEY,JSON.stringify([...s]));}
+function saveCompleted(id){const s=getCompletedIds();s.add(id);setCompletedIds(s);syncProgressToFirestore();}
+function removeCompleted(id){const s=getCompletedIds();s.delete(id);setCompletedIds(s);syncProgressToFirestore();}
+function getSubjectOrder(){try{const a=JSON.parse(localStorage.getItem(SUBJECT_ORDER_KEY)||'null');if(Array.isArray(a)){const all=DEFAULT_SUBJECT_ORDER.slice();const r=a.filter(s=>all.includes(s));all.forEach(s=>{if(!r.includes(s))r.push(s);});return r;}}catch(e){}return DEFAULT_SUBJECT_ORDER.slice();}
+function saveSubjectOrder(a){localStorage.setItem(SUBJECT_ORDER_KEY,JSON.stringify(a));}
+function getTimerSettings(){try{return JSON.parse(localStorage.getItem(TIMER_KEY)||'null')||{enabled:false,endTimestamp:null,title:'',notified:false};}catch(e){return {enabled:false,endTimestamp:null,title:'',notified:false};}}
+function saveTimerSettings(o){localStorage.setItem(TIMER_KEY,JSON.stringify(o));}
+function getSuggestionState(){try{return JSON.parse(localStorage.getItem(SUGGESTION_KEY)||'null')||{date:null,chapterId:null};}catch(e){return {date:null,chapterId:null};}}
+function saveSuggestionState(o){localStorage.setItem(SUGGESTION_KEY,JSON.stringify(o));}
+function getCachedAuth(){try{return JSON.parse(localStorage.getItem(CACHED_AUTH_KEY)||'null');}catch(e){return null;}}
+function setCachedAuth(o){localStorage.setItem(CACHED_AUTH_KEY,JSON.stringify(o));}
+
+let audioCtx=null;
+function ensureAudio(){if(!audioCtx){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended'){try{audioCtx.resume();}catch(e){}}}
+function playBeep(){ensureAudio();if(!audioCtx)return;try{[880,1046,1318,1046,1318,1568].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=f;o.type='sine';const tt=audioCtx.currentTime+i*0.18;g.gain.setValueAtTime(0.0001,tt);g.gain.exponentialRampToValueAtTime(0.35,tt+0.02);g.gain.exponentialRampToValueAtTime(0.0001,tt+0.16);o.start(tt);o.stop(tt+0.18);});}catch(e){}}
+
+function initTheme(){const th=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',th);updateThemeUI(th);}
+function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme');const nxt=cur==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',nxt);localStorage.setItem('theme',nxt);updateThemeUI(nxt);}
+function updateThemeUI(th){const icon=document.getElementById('theme-icon');if(!icon)return;if(th==='dark'){icon.innerHTML='<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';}else{icon.innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';}}
+window.toggleTheme=toggleTheme;
+window.toggleLanguage=function(){setLanguage(getLanguage()==='bn'?'en':'bn');applyLanguage();};
+
+let globalTapCount=0,globalTapTimer=null;
+function handleGlobalTap(e){ensureAudio();const inter=e.target.closest('.topic-item,.subject-card,button,a,input,.suggestion-card,.lb-item,.dropdown-trigger,.user-info-mini');if(inter)return;globalTapCount++;if(globalTapCount===1)globalTapTimer=setTimeout(()=>globalTapCount=0,1000);else if(globalTapCount===3){clearTimeout(globalTapTimer);globalTapCount=0;openSettingsModal();}}
+window.handleGlobalTap=handleGlobalTap;
+
+let currentUser=null;
+let userProfile={name:'',class:'',email:'',eiin:'',extraInfo:'',photoURL:''};
+let isLoggedIn=false;
+let cachedLeaderboard=[];
+let cachedNotifications=[];
+let cachedGlobalVisits=0;
+let unsubUserDoc=null;
+let initialAuthHandled=false;
+let myComputedRank=null;
+
+function syncProgressToFirestore(){if(!currentUser||!isLoggedIn)return;const ids=[...getCompletedIds()];db.collection('users').doc(currentUser.uid).set({completedIds:ids,completedCount:ids.length,lastActive:FieldValue.serverTimestamp()},{merge:true}).catch(err=>console.warn('Sync deferred:',err.message));}
+async function loadUserProfileFromFirestore(uid){try{const doc=await db.collection('users').doc(uid).get();if(doc.exists){const d=doc.data();userProfile={name:d.name||'',class:d.class||'',email:d.email||'',eiin:d.eiin||'',extraInfo:d.extraInfo||'',photoURL:d.photoURL||''};localStorage.setItem(PROFILE_KEY,JSON.stringify(userProfile));const localIds=getCompletedIds();const remoteIds=Array.isArray(d.completedIds)?d.completedIds:[];const merged=new Set([...localIds,...remoteIds]);setCompletedIds(merged);syncProgressToFirestore();return d;}}catch(err){console.warn('Profile load failed:',err.message);}return null;}
+async function incrementVisitCounters(){if(!currentUser||!isLoggedIn)return;try{await db.collection('stats').doc('global').set({totalVisits:FieldValue.increment(1)},{merge:true});await db.collection('users').doc(currentUser.uid).set({visitCount:FieldValue.increment(1),lastVisit:FieldValue.serverTimestamp()},{merge:true});}catch(err){console.warn('Visit count deferred:',err.message);}}
+async function fetchGlobalVisits(){try{const d=await db.collection('stats').doc('global').get();if(d.exists)cachedGlobalVisits=d.data().totalVisits||0;const el=document.getElementById('lb-visit-count');if(el)el.innerText=formatNumber(cachedGlobalVisits);const vBadge=document.querySelector('.leaderboard-card .visit-badge span');if(vBadge)vBadge.innerText=formatNumber(cachedGlobalVisits);}catch(e){}}
+async function fetchLeaderboard(){if(!userProfile.class)return cachedLeaderboard;try{const snap=await db.collection('users').where('class','==',userProfile.class).orderBy('completedCount','desc').limit(50).get();const arr=[];snap.forEach(d=>{const x=d.data();arr.push({uid:d.id,name:x.name||'Unknown',class:x.class||'',photoURL:x.photoURL||'',completedCount:x.completedCount||0});});cachedLeaderboard=arr;return arr;}catch(err){console.warn('Leaderboard failed:',err.message);return cachedLeaderboard;}}
+
+async function fetchMyRank(){
+    if(!currentUser||!userProfile.class)return null;
+    const myCount=getCompletedIds().size;
+    if(cachedLeaderboard.length>0){
+        const idx=cachedLeaderboard.findIndex(u=>u.uid===currentUser.uid);
+        if(idx>=0){myComputedRank=idx+1;return idx+1;}
+        const ahead=cachedLeaderboard.filter(u=>u.completedCount>myCount).length;
+        myComputedRank=ahead+1;
+        return myComputedRank;
+    }
+    try{
+        const snap=await db.collection('users').where('class','==',userProfile.class).where('completedCount','>',myCount).get();
+        myComputedRank=snap.size+1;
+        return myComputedRank;
+    }catch(e){
+        if(cachedLeaderboard.length>0){
+            const ahead=cachedLeaderboard.filter(u=>u.completedCount>myCount).length;
+            myComputedRank=ahead+1;
+            return myComputedRank;
+        }
+        return null;
+    }
+}
+
+async function fetchNotifications(){try{const snap=await db.collection('notifications').orderBy('createdAt','desc').limit(30).get();cachedNotifications=[];snap.forEach(d=>{const x=d.data();cachedNotifications.push({id:d.id,title:x.title||'',message:x.message||'',buttonText:x.buttonText||'',buttonLink:x.buttonLink||'',createdAt:x.createdAt});});updateNotificationBadge();return cachedNotifications;}catch(e){return cachedNotifications;}}
+function getReadNotifIds(){try{return new Set(JSON.parse(localStorage.getItem(NOTIF_READ_KEY)||'[]'));}catch(e){return new Set();}}
+function saveReadNotifIds(s){localStorage.setItem(NOTIF_READ_KEY,JSON.stringify([...s]));}
+function updateNotificationBadge(){const read=getReadNotifIds();const unread=cachedNotifications.filter(n=>!read.has(n.id));const dot=document.getElementById('notif-dot');const btn=document.getElementById('notification-btn');if(!dot||!btn)return;if(unread.length>0){btn.classList.add('has-unread');dot.innerText=formatNumber(unread.length>9?'9+':unread.length);}else btn.classList.remove('has-unread');}
+
+function navigateTo(view,param,push=true){currentView=view;if(view==='home'){currentSubject=null;showView('home-view');document.getElementById('nav-header').classList.remove('visible');renderHomeView();if(push)history.pushState({page:'home'},'','#home');}else if(view==='subject'&&param){currentSubject=param;showView('subject-view');document.getElementById('nav-header').classList.add('visible');document.getElementById('nav-settings-btn').classList.remove('hidden');document.getElementById('nav-title').innerText=getSubjectDisplayName(param);renderSubjectView(param);if(push)history.pushState({page:'subject',param},'','#subject/'+encodeURIComponent(param));}else if(view==='leaderboard'){showView('leaderboard-view');document.getElementById('nav-header').classList.add('visible');document.getElementById('nav-settings-btn').classList.add('hidden');document.getElementById('nav-title').innerText=t('lbTitle');renderLeaderboardPage();if(push)history.pushState({page:'leaderboard'},'','#leaderboard');}}
+function showView(id){['home-view','subject-view','leaderboard-view'].forEach(v=>{document.getElementById(v).classList.toggle('active',v===id);});}
+function parseHash(){const h=(location.hash||'').replace(/^#/,'');if(!h||h==='home')return{page:'home'};if(h.startsWith('subject/'))return{page:'subject',param:decodeURIComponent(h.slice(8))};if(h==='leaderboard')return{page:'leaderboard'};return{page:'home'};}
+function setupRouter(){const init=parseHash();history.replaceState({page:'home',_base:true},'','#home');history.pushState({page:'home',_base:true},'','#home');if(init.page==='subject')navigateTo('subject',init.param,false);else if(init.page==='leaderboard')navigateTo('leaderboard',null,false);else navigateTo('home',null,false);window.addEventListener('popstate',(e)=>{const st=e.state;if(!st||st._base){history.pushState({page:'home',_base:true},'','#home');if(currentView!=='home')navigateTo('home',null,false);return;}if(st.page==='subject'&&st.param)navigateTo('subject',st.param,false);else if(st.page==='leaderboard')navigateTo('leaderboard',null,false);else navigateTo('home',null,false);});}
+window.handleBackBtn=function(){if(currentView==='home')return;navigateTo('home',null,true);};
+
+function renderHomeView(){
+    renderSuggestion();
+    const grid=document.getElementById('subject-grid');
+    grid.innerHTML='';
+    const comp=getCompletedIds();
+    const order=getSubjectOrder();
+    order.forEach(sub=>{
+        const chs=syllabusData.filter(x=>x.subject===sub);
+        if(!chs.length)return;
+        const total=chs.length;
+        const done=chs.filter(c=>comp.has(c.id)).length;
+        const pct=total>0?Math.round((done/total)*100):0;
+        const color=getSubjectColor(sub);
+        const card=document.createElement('div');
+        card.className='subject-card';
+        card.onclick=()=>navigateTo('subject',sub,true);
+        const ic=document.createElement('div');
+        ic.className='subject-card-icon';
+        ic.style.color=color;
+        ic.style.background=color+'20';
+        ic.innerHTML=getSubjectIcon(sub);
+        const nm=document.createElement('div');
+        nm.className='subject-card-name';
+        nm.innerText=getSubjectDisplayName(sub);
+        const pr=document.createElement('div');
+        let cls='subject-card-progress';
+        if(pct===100)cls+=' done';
+        else if(pct===0)cls+=' low';
+        pr.className=cls;
+        pr.innerText=formatNumber(pct)+'%';
+        card.appendChild(ic);card.appendChild(nm);card.appendChild(pr);
+        grid.appendChild(card);
+    });
+    const lbCard=document.createElement('div');
+    lbCard.className='subject-card leaderboard-card';
+    lbCard.onclick=()=>navigateTo('leaderboard',null,true);
+    const lbIcon=document.createElement('div');
+    lbIcon.className='subject-card-icon';
+    lbIcon.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>`;
+    const lbName=document.createElement('div');
+    lbName.className='subject-card-name';
+    lbName.innerText=t('lbTitle');
+    const lbProg=document.createElement('div');
+    lbProg.className='subject-card-progress';
+    const pct=syllabusData.length?Math.floor((comp.size/syllabusData.length)*100):0;
+    lbProg.innerText=formatNumber(pct)+'%';
+    const vB=document.createElement('div');
+    vB.className='visit-badge';
+    vB.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg><span>${formatNumber(cachedGlobalVisits)}</span>`;
+    lbCard.appendChild(vB);lbCard.appendChild(lbIcon);lbCard.appendChild(lbName);lbCard.appendChild(lbProg);
+    grid.appendChild(lbCard);
+}
+
+function renderSuggestion(){const c=document.getElementById('suggestion-container');c.innerHTML='';const sug=getOrUpdateDailySuggestion();if(!sug){const e=document.createElement('div');e.className='suggestion-card';e.innerHTML=`<div class="suggestion-empty">${t('allDone')}</div>`;c.appendChild(e);return;}const color=getSubjectColor(sug.subject);const card=document.createElement('div');card.className='suggestion-card';const icon=document.createElement('div');icon.className='suggestion-icon';icon.style.background=color;icon.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>`;const content=document.createElement('div');content.className='suggestion-content';content.innerHTML=`<div class="suggestion-label">${t('suggestionLabel')}</div><div class="suggestion-subject" style="color:${color}">${escapeHtml(getSubjectDisplayName(sug.subject))}</div><div class="suggestion-chapter">${escapeHtml(getChapterDisplayName(sug.subject,sug.chapter))}</div>`;const btn=document.createElement('button');btn.className='suggestion-done-btn';btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> ${t('completeBtn')}`;btn.onclick=(e)=>{e.stopPropagation();openSubjectAndHighlight(sug.subject,sug.id);};card.appendChild(icon);card.appendChild(content);card.appendChild(btn);card.onclick=()=>navigateTo('subject',sug.subject,true);c.appendChild(card);}
+function openSubjectAndHighlight(sub,id){navigateTo('subject',sub,true);setTimeout(()=>{const items=document.querySelectorAll('#chapter-list .topic-item');const chs=syllabusData.filter(x=>x.subject===sub);const i=chs.findIndex(x=>x.id===id);if(i>=0&&items[i]){items[i].scrollIntoView({behavior:'smooth',block:'center'});items[i].classList.add('highlighted');setTimeout(()=>items[i].classList.remove('highlighted'),3500);}},150);}
+function computeSuggestion(){const comp=getCompletedIds();const stats={};syllabusData.forEach(item=>{if(!stats[item.subject])stats[item.subject]={total:0,pending:0,arr:[]};stats[item.subject].total++;if(!comp.has(item.id)){stats[item.subject].pending++;stats[item.subject].arr.push(item);}});let bs=null,bp=-1,bn=-1;Object.keys(stats).forEach(s=>{const x=stats[s];if(x.pending===0)return;const p=(x.pending/x.total)*100;if(p>bp||(p===bp&&x.pending>bn)){bp=p;bn=x.pending;bs=s;}});return bs?stats[bs].arr[0]:null;}
+function getOrUpdateDailySuggestion(){const today=getTodayKey();const st=getSuggestionState();const comp=getCompletedIds();if(st.date===today&&st.chapterId){const f=syllabusData.find(x=>x.id===st.chapterId);if(f&&!comp.has(st.chapterId))return f;}const s=computeSuggestion();saveSuggestionState({date:today,chapterId:s?s.id:null});return s;}
+function refreshSuggestionAfterCompletion(id){const st=getSuggestionState();if(st.chapterId===id){const s=computeSuggestion();saveSuggestionState({date:getTodayKey(),chapterId:s?s.id:null});}}
+
+function renderSubjectView(sub){const list=document.getElementById('chapter-list');list.innerHTML='';const comp=getCompletedIds();const chs=syllabusData.filter(x=>x.subject===sub);const color=getSubjectColor(sub);chs.forEach(item=>{const isDone=comp.has(item.id);const li=document.createElement('li');li.className='topic-item '+(isDone?'completed':'pending-mode');const ic=document.createElement('div');ic.className='topic-icon-box';ic.style.color=isDone?'var(--green-primary)':color;ic.innerHTML=getSubjectIcon(item.subject);const tb=document.createElement('div');tb.className='topic-text-box';const ch=document.createElement('div');ch.className='topic-chapter';ch.innerText=getChapterDisplayName(item.subject,item.chapter);tb.appendChild(ch);li.appendChild(ic);li.appendChild(tb);if(!isDone)setupTripleClick(li,item);list.appendChild(li);});}
+function setupTripleClick(el,data){let n=0,tmr=null;el.addEventListener('click',(e)=>{e.preventDefault();n++;if(n===1)tmr=setTimeout(()=>n=0,1000);else if(n===3){clearTimeout(tmr);n=0;processCompletion(el,data);}});}
+function processCompletion(el,data){const loader=document.createElement('div');loader.className='click-loader';loader.innerHTML='<div class="spinner"></div>';el.appendChild(loader);setTimeout(()=>{loader.remove();if(data&&data.id){saveCompleted(data.id);if(currentSubject)renderSubjectView(currentSubject);refreshSuggestionAfterCompletion(data.id);updateOverallProgress();showToast(t('completedToast'));}},700);}
+
+function renderBadges(pct){const r1=document.getElementById('badge-row-1');const r2=document.getElementById('badge-row-2');r1.innerHTML='';r2.innerHTML='';for(let i=1;i<=20;i++){const b=document.createElement('span');const level=i*5;b.className='achievement-badge';if(pct>=level)b.classList.add('achieved');if(i<=5)b.classList.add('badge-red');else if(i<=10)b.classList.add('badge-blue');else if(i<20)b.classList.add('badge-green');else b.classList.add('badge-special');if(i===20)b.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;else b.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>`;if(i<=10)r1.appendChild(b);else r2.appendChild(b);}let bc;if(pct<=25)bc='var(--badge-red)';else if(pct<=50)bc='var(--badge-blue)';else if(pct<100)bc='var(--badge-green)';else bc='var(--badge-gold)';const f=document.getElementById('fluid-progress-fill');f.style.width=pct+'%';f.style.background=bc;document.getElementById('progress-percent-text').innerText=formatNumber(pct)+'%';}
+function updateOverallProgress(){const comp=getCompletedIds();const total=syllabusData.length;const done=comp.size;const pct=total>0?Math.floor((done/total)*100):0;renderBadges(pct);renderSubjectProgress();}
+
+function updateTimerDisplay(){const timer=getTimerSettings();const sec=document.getElementById('countdown-section');const ttl=document.getElementById('countdown-title');const cEl=document.getElementById('countdown-timer-content');if(!timer.enabled||!timer.endTimestamp){sec.style.display='none';sec.classList.remove('expired');return;}const now=Date.now();const end=timer.endTimestamp;const oneHr=3600000;if(now>=end+oneHr){timer.enabled=false;timer.endTimestamp=null;timer.notified=false;saveTimerSettings(timer);sec.style.display='none';sec.classList.remove('expired');updateTimerStatusDisplay();return;}sec.style.display='';ttl.innerText=timer.title||t('timerDefault');if(now>=end){sec.classList.add('expired');cEl.classList.add('ended');cEl.innerHTML=`<svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2"></path><path d="M5 3 2 6"></path><path d="m22 6-3-3"></path></svg><span>${t('timerEnded')}</span>`;if(!timer.notified){playBeep();timer.notified=true;saveTimerSettings(timer);}}else{sec.classList.remove('expired');cEl.classList.remove('ended');const diff=end-now;const dd=Math.floor(diff/86400000);const hh=Math.floor((diff%86400000)/3600000);const mm=Math.floor((diff%3600000)/60000);const ss=Math.floor((diff%60000)/1000);const bn=getLanguage()==='bn';const pad=(n)=>String(n).padStart(2,'0');const num=(n)=>bn?toBengaliNumber(pad(n)):pad(n);const uDay=bn?'দিন':'d';const uHr=bn?'ঘণ্টা':'hr';const uMin=bn?'মিনিট':'min';const uSec=bn?'সেকেন্ড':'sec';let html='';if(dd>0)html+=`<span>${num(dd)}</span><span class="timer-unit">${uDay}</span><span class="timer-separator">:</span>`;html+=`<span>${num(hh)}</span><span class="timer-unit">${uHr}</span><span class="timer-separator">:</span>`;html+=`<span>${num(mm)}</span><span class="timer-unit">${uMin}</span><span class="timer-separator">:</span>`;html+=`<span>${num(ss)}</span><span class="timer-unit">${uSec}</span>`;cEl.innerHTML=html;}}
+function updateTimerStatusDisplay(){const el=document.getElementById('timer-status-display');if(!el)return;const timer=getTimerSettings();if(!timer.enabled||!timer.endTimestamp){el.classList.remove('active','running','expired');return;}const now=Date.now();const end=timer.endTimestamp;const oneHr=3600000;if(now>=end+oneHr){el.classList.remove('active','running','expired');return;}el.classList.add('active');if(now>=end){el.classList.remove('running');el.classList.add('expired');el.innerText=t('timerEndedStatus');}else{el.classList.remove('expired');el.classList.add('running');const diff=end-now;const dd=Math.floor(diff/86400000);const hh=Math.floor((diff%86400000)/3600000);const mm=Math.floor((diff%3600000)/60000);const ss=Math.floor((diff%60000)/1000);const bn=getLanguage()==='bn';if(bn){let str='চলছে: ';if(dd>0)str+=`${toBengaliNumber(dd)} দিন `;str+=`${toBengaliNumber(hh)} ঘণ্টা ${toBengaliNumber(mm)} মিনিট ${toBengaliNumber(ss)} সেকেন্ড বাকি`;el.innerText=str;}else{let str='Running: ';if(dd>0)str+=`${dd}d `;str+=`${hh}h ${mm}m ${ss}s left`;el.innerText=str;}}}
+window.startTimerFromSettings=function(){const title=document.getElementById('timer-title-input').value.trim();const mode=document.querySelector('.mode-btn.active').dataset.mode;let endTs=null;if(mode==='hours'){const h=parseFloat(document.getElementById('timer-hours-input').value);if(!h||h<=0){showToast(t('enterValidHours'));return;}endTs=Date.now()+h*3600000;}else{const v=document.getElementById('timer-date-input').value;if(!v){showToast(t('selectDateTime'));return;}const ts=new Date(v).getTime();if(isNaN(ts)||ts<=Date.now()){showToast(t('futureTime'));return;}endTs=ts;}saveTimerSettings({enabled:true,endTimestamp:endTs,title:title||t('timerDefault'),notified:false});ensureAudio();updateTimerDisplay();updateTimerStatusDisplay();showToast(t('timerStarted'));};
+window.stopTimerFromSettings=function(){saveTimerSettings({enabled:false,endTimestamp:null,title:'',notified:false});updateTimerDisplay();updateTimerStatusDisplay();showToast(t('timerStopped'));};
+
+function loadProfileLocal(){try{const s=localStorage.getItem(PROFILE_KEY);if(s)userProfile=JSON.parse(s);}catch(e){}updateProfileUI();}
+function saveProfile(p){localStorage.setItem(PROFILE_KEY,JSON.stringify(p));userProfile=p;updateProfileUI();if(currentUser&&isLoggedIn){db.collection('users').doc(currentUser.uid).set({name:p.name||'',photoURL:p.photoURL||''},{merge:true}).catch(e=>console.warn('Profile sync deferred:',e.message));}const ca=getCachedAuth();if(ca){ca.profile=userProfile;setCachedAuth(ca);}}
+function updateProfileUI(){const n=document.getElementById('userNameSpanMini');const c=document.getElementById('userClassSpanMini');const def=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;const avatarEl=document.getElementById('avatarDisplayMini');if(isLoggedIn){n.innerText=userProfile.name||'পরীক্ষার্থী';n.classList.remove('login-prompt');c.innerText=userProfile.class||'';const html=userProfile.photoURL?`<img src="${escapeHtml(userProfile.photoURL)}" alt="avatar" decoding="async" onerror="this.parentElement.innerHTML='${def.replace(/'/g,'&#39;')}'">`:def;avatarEl.innerHTML=html;avatarEl.classList.remove('pulse-hint');const hb=document.getElementById('profileHint');if(hb)hb.classList.remove('show');}else{n.innerText=t('loginPrompt');n.classList.add('login-prompt');c.innerText=t('loginSubPrompt');avatarEl.innerHTML=def;avatarEl.classList.add('pulse-hint');}const ap=document.getElementById('avatarPreview');if(ap){const html=userProfile.photoURL?`<img src="${escapeHtml(userProfile.photoURL)}" alt="avatar" decoding="async">`:def;ap.innerHTML=html;}const ui=document.getElementById('avatar-url-input');if(ui&&userProfile.photoURL&&!ui.value)ui.value=userProfile.photoURL;const pn=document.getElementById('profile-name-input');if(pn&&!pn.value)pn.value=userProfile.name||'';}
+
+window.onProfileClick=function(e){e.stopPropagation();if(isLoggedIn){openSettingsModal();}else{showAuthModal();}};
+window.openSettingsModal=function(){updateProfileUI();renderSubjectOrderList();syncTimerUI();document.getElementById('profile-modal').classList.add('active');};
+window.closeProfileModal=function(){document.getElementById('profile-modal').classList.remove('active');};
+function initSettingsTabs(){document.querySelectorAll('.settings-tab-btn').forEach(b=>{b.addEventListener('click',function(){document.querySelectorAll('.settings-tab-btn').forEach(x=>x.classList.remove('active'));this.classList.add('active');document.querySelectorAll('.settings-tab-content').forEach(x=>x.classList.remove('active'));document.getElementById('settings-'+this.dataset.settingsTab).classList.add('active');if(this.dataset.settingsTab==='tab3'){syncTimerUI();updateTimerStatusDisplay();}});});}
+function renderSubjectProgress(){const c=document.getElementById('subjectProgressListDynamic');if(!c)return;const comp=getCompletedIds();const m=new Map();syllabusData.forEach(item=>{if(!m.has(item.subject))m.set(item.subject,{total:0,done:0});const s=m.get(item.subject);s.total++;if(comp.has(item.id))s.done++;});let html='';m.forEach((st,sub)=>{const p=st.total>0?Math.round((st.done/st.total)*100):0;const color=getSubjectColor(sub);html+=`<div class="subject-progress-card"><div class="subject-header"><span class="subject-title" style="color:${color}">${escapeHtml(getSubjectDisplayName(sub))}</span><span class="subject-stats">${formatNumber(st.done)}/${formatNumber(st.total)}</span></div><div class="progress-bar-container"><div class="progress-bar-fill" style="width:${p}%;background:${color}"></div></div><div class="progress-percent" style="color:${color}">${formatNumber(p)}%</div></div>`;});c.innerHTML=html;}
+function renderSubjectOrderList(){const list=document.getElementById('subject-order-list');if(!list)return;const order=getSubjectOrder();list.innerHTML='';order.forEach((sub,i)=>{const row=document.createElement('div');row.className='order-item';const n=document.createElement('div');n.className='order-num';n.innerText=formatNumber(i+1);const nm=document.createElement('div');nm.className='order-name';nm.innerText=getSubjectDisplayName(sub);const up=document.createElement('button');up.className='order-btn';up.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';up.disabled=i===0;up.onclick=()=>moveSubject(i,-1);const dn=document.createElement('button');dn.className='order-btn';dn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';dn.disabled=i===order.length-1;dn.onclick=()=>moveSubject(i,1);row.appendChild(n);row.appendChild(nm);row.appendChild(up);row.appendChild(dn);list.appendChild(row);});}
+function moveSubject(i,dir){const order=getSubjectOrder();const ni=i+dir;if(ni<0||ni>=order.length)return;[order[i],order[ni]]=[order[ni],order[i]];saveSubjectOrder(order);renderSubjectOrderList();if(currentView==='home')renderHomeView();showToast(t('orderUpdated'));}
+function syncTimerUI(){const timer=getTimerSettings();const ti=document.getElementById('timer-title-input');if(ti)ti.value=timer.title||'';document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));const hb=document.getElementById('mode-hours-btn');if(hb)hb.classList.add('active');const hm=document.getElementById('timer-hours-mode');const dm=document.getElementById('timer-date-mode');if(hm)hm.style.display='';if(dm)dm.style.display='none';updateTimerStatusDisplay();}
+
+let restoreCode=null;
+window.openRestoreModal=function(){if(!currentSubject)return;generateRestoreCode();document.getElementById('restore-step-code').style.display='block';document.getElementById('restore-step-list').style.display='none';document.getElementById('restore-code-input').value='';document.getElementById('restore-code-error').style.display='none';document.getElementById('restore-modal').classList.add('active');};
+function generateRestoreCode(){restoreCode=String(Math.floor(1000+Math.random()*9000));document.getElementById('restore-code-display').innerText=getLanguage()==='bn'?toBengaliNumber(restoreCode):restoreCode;}
+window.verifyRestoreCode=function(){const raw=document.getElementById('restore-code-input').value.trim();const bn=['০','১','২','৩','৪','৫','৬','৭','৮','৯'];const norm=raw.split('').map(ch=>{const i=bn.indexOf(ch);return i>=0?String(i):ch;}).join('');if(norm===restoreCode){document.getElementById('restore-step-code').style.display='none';document.getElementById('restore-step-list').style.display='block';renderRestoreList();}else{document.getElementById('restore-code-error').style.display='block';generateRestoreCode();document.getElementById('restore-code-input').value='';}};
+function renderRestoreList(){if(!currentSubject)return;const comp=getCompletedIds();const chs=syllabusData.filter(x=>x.subject===currentSubject);const done=chs.filter(c=>comp.has(c.id));const list=document.getElementById('restore-list');list.innerHTML='';if(!done.length){list.innerHTML=`<p style="text-align:center;padding:20px;color:var(--app-text-secondary);font-size:.85rem;">এই বিষয়ে কোনো সম্পন্ন চ্যাপ্টার নেই।</p>`;}else{done.forEach(item=>{const row=document.createElement('div');row.className='restore-item';const tx=document.createElement('div');tx.className='restore-text';tx.innerText=getChapterDisplayName(item.subject,item.chapter);const btn=document.createElement('button');btn.className='restore-btn';btn.title='ফিরাও';btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 4 3 9 8 9"></polyline></svg>`;btn.onclick=()=>{removeCompleted(item.id);renderSubjectView(currentSubject);updateOverallProgress();renderRestoreList();showToast(t('restoredToast'));};row.appendChild(tx);row.appendChild(btn);list.appendChild(row);});}}
+window.closeRestoreModal=function(){document.getElementById('restore-modal').classList.remove('active');restoreCode=null;};
+
+window.openNotificationPanel=async function(){document.getElementById('notification-modal').classList.add('active');renderNotificationList();fetchNotifications().then(()=>renderNotificationList());const read=getReadNotifIds();cachedNotifications.forEach(n=>read.add(n.id));saveReadNotifIds(read);setTimeout(()=>updateNotificationBadge(),400);};
+window.closeNotificationPanel=function(){document.getElementById('notification-modal').classList.remove('active');};
+function renderNotificationList(){const list=document.getElementById('notif-list');if(!list)return;list.innerHTML='';if(!cachedNotifications.length){list.innerHTML=`<div class="notif-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><div>${t('notifEmpty')}</div></div>`;return;}cachedNotifications.forEach(n=>{const item=document.createElement('div');item.className='notif-item';let h='';if(n.title)h+=`<div class="notif-item-title">${escapeHtml(n.title)}</div>`;if(n.message)h+=`<div class="notif-item-msg">${escapeHtml(n.message)}</div>`;h+=`<div class="notif-item-meta"><span>${timeAgo(n.createdAt)}</span></div>`;if(n.buttonText&&n.buttonLink){h+=`<a href="${escapeHtml(n.buttonLink)}" target="_blank" class="notif-action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg><span>${escapeHtml(n.buttonText)}</span></a>`;}item.innerHTML=h;list.appendChild(item);});}
+
+let lbTabCurrent='ranking';
+function initLeaderboardTabs(){document.querySelectorAll('.lb-page-tab').forEach(btn=>{btn.addEventListener('click',function(){const tab=this.dataset.lbTab;lbTabCurrent=tab;document.querySelectorAll('.lb-page-tab').forEach(b=>b.classList.remove('active'));this.classList.add('active');document.getElementById('lb-tab-ranking').style.display=tab==='ranking'?'block':'none';document.getElementById('lb-tab-progress').style.display=tab==='progress'?'block':'none';if(tab==='progress')renderSubjectProgress();});});}
+async function renderLeaderboardPage(){document.getElementById('lb-page-batch').innerText=userProfile.class||'';document.getElementById('lb-page-title-text').innerText=t('lbTitle');document.getElementById('lb-visit-count').innerText=formatNumber(cachedGlobalVisits);renderLbList([],null);if(!isLoggedIn){const list=document.getElementById('lb-list');list.innerHTML=`<div class="lb-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg><div>${t('lbNoData')}</div></div>`;return;}const users=await fetchLeaderboard();const rank=await fetchMyRank();renderLbList(users,rank);await fetchGlobalVisits();}
+function renderLbList(users,myRank){const list=document.getElementById('lb-list');const note=document.getElementById('lb-my-rank-note');if(!list)return;list.innerHTML='';if(!users||!users.length){list.innerHTML=`<div class="lb-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg><div>${t('lbNoData')}</div></div>`;if(note)note.style.display='none';return;}const top19=users.slice(0,19);const myUid=currentUser?currentUser.uid:null;let myInTop=false;top19.forEach((u,i)=>{if(u.uid===myUid)myInTop=true;list.appendChild(makeLbItem(u,i+1,u.uid===myUid));});if(myUid&&myRank&&!myInTop){if(note){note.style.display='block';note.innerText=`${t('lbYourRank')}: #${formatNumber(myRank)}`;}const sep=document.createElement('div');sep.className='lb-separator';sep.innerText='•••';list.appendChild(sep);const myUser=users.find(u=>u.uid===myUid)||{name:userProfile.name||'আপনি',class:userProfile.class||'',photoURL:userProfile.photoURL||'',completedCount:getCompletedIds().size};list.appendChild(makeLbItem(myUser,myRank,true));}else{if(note)note.style.display='none';}}
+function makeLbItem(u,rank,isSelf){
+    const total=syllabusData.length||1;
+    const pct=Math.floor((u.completedCount/total)*100);
+    const el=document.createElement('div');
+    el.className='lb-item';
+    if(rank===1)el.classList.add('diamond');
+    else if(rank===2)el.classList.add('gold');
+    else if(rank===3)el.classList.add('silver');
+    if(isSelf)el.classList.add('self');
+    if(rank===1){
+        const crown=document.createElement('div');
+        crown.className='lb-crown';
+        crown.innerHTML=`<svg viewBox="0 0 24 24"><path d="M2 18h20l-2-10-4 4-4-6-4 6-4-4z"/></svg><span>#1</span>`;
+        el.appendChild(crown);
+    }
+    const rankEl=document.createElement('div');
+    rankEl.className='lb-rank';
+    rankEl.innerText='#'+formatNumber(rank);
+    const av=document.createElement('div');
+    av.className='lb-avatar';
+    if(u.photoURL){
+        av.innerHTML=`<img src="${escapeHtml(u.photoURL)}" alt="" decoding="async" onerror="this.parentElement.innerHTML='<svg viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.8\\'><path d=\\'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\\'></path><circle cx=\\'12\\' cy=\\'7\\' r=\\'4\\'></circle></svg>'">`;
+    }else{
+        av.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+    }
+    const info=document.createElement('div');
+    info.className='lb-info';
+    const nm=document.createElement('div');
+    nm.className='lb-name';
+    const nameSpan=document.createElement('span');
+    nameSpan.innerText=u.name||'Unknown';
+    nm.appendChild(nameSpan);
+    const cl=document.createElement('div');
+    cl.className='lb-class';
+    cl.innerText=u.class||'';
+    info.appendChild(nm);
+    if(u.class)info.appendChild(cl);
+    const pctEl=document.createElement('div');
+    pctEl.className='lb-percent';
+    pctEl.innerText=formatNumber(pct)+'%';
+    el.appendChild(rankEl);el.appendChild(av);el.appendChild(info);el.appendChild(pctEl);
+    return el;
+}
+
+window.openShareInstruction=function(){document.getElementById('share-instruction-modal').classList.add('active');};
+async function loadImageSafe(url){return new Promise((resolve,reject)=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>resolve(img);img.onerror=()=>reject(new Error('img fail'));img.src=url;setTimeout(()=>reject(new Error('timeout')),3500);});}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+let currentShareCanvas=null;
+
+window.showResultCard=async function(){
+    document.getElementById('share-instruction-modal').classList.remove('active');
+    showToast(getLanguage()==='bn'?'কার্ড তৈরি হচ্ছে...':'Generating card...');
+    const comp=getCompletedIds();
+    const total=syllabusData.length;
+    const done=comp.size;
+    const pct=total>0?Math.round((done/total)*100):0;
+    const name=userProfile.name||(getLanguage()==='bn'?'পরীক্ষার্থী':'Student');
+    const klass=userProfile.class||"HSC'28";
+    const bn=getLanguage()==='bn';
+    if(cachedLeaderboard.length===0&&isLoggedIn){
+        try{await fetchLeaderboard();}catch(e){}
+    }
+    let myRank=myComputedRank;
+    try{const r=await fetchMyRank();if(r)myRank=r;}catch(e){}
+
+    const W=1080,H=1560;
+    const canvas=document.createElement('canvas');
+    canvas.width=W;canvas.height=H;
+    const ctx=canvas.getContext('2d');
+    const bg=ctx.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#F8FAFC');bg.addColorStop(0.5,'#EEF2FF');bg.addColorStop(1,'#E0E7FF');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=0.35;
+    const glow=ctx.createRadialGradient(W-80,120,20,W-80,120,320);
+    glow.addColorStop(0,'rgba(124,58,237,0.28)');glow.addColorStop(1,'rgba(124,58,237,0)');
+    ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+    const logoSize=220;const logoY=70;
+    try{const logo=await loadImageSafe(LOGO_URL);ctx.drawImage(logo,(W-logoSize)/2,logoY,logoSize,logoSize);}
+    catch(e){ctx.fillStyle='#4F46E5';ctx.font=`bold 100px ${FONT_FAMILY}`;ctx.textAlign='center';ctx.fillText('syllabo',W/2,logoY+150);}
+    const titleY=logoY+logoSize+70;
+    ctx.fillStyle='#1F2937';ctx.font=`700 ${bn?46:40}px ${FONT_FAMILY}`;ctx.textAlign='center';ctx.textBaseline='alphabetic';
+    ctx.fillText(bn?'আমার প্রস্তুতির অগ্রগতি':'My Preparation Progress',W/2,titleY);
+    const cardX=80;const cardY=titleY+60;const cardW=W-160;const cardH=880;
+    ctx.shadowColor='rgba(79,70,229,0.13)';ctx.shadowBlur=45;ctx.shadowOffsetY=18;
+    ctx.fillStyle='#FFFFFF';roundRect(ctx,cardX,cardY,cardW,cardH,48);ctx.fill();
+    ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+    const cx=W/2;const cy=cardY+250;const radius=140;const ringLW=30;
+    ctx.strokeStyle='#EEF2FF';ctx.lineWidth=ringLW;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.stroke();
+    ctx.strokeStyle='#4F46E5';ctx.lineWidth=ringLW;ctx.lineCap='round';ctx.beginPath();ctx.arc(cx,cy,radius,-Math.PI/2,-Math.PI/2+(Math.PI*2*pct/100));ctx.stroke();
+    ctx.fillStyle='#1F2937';ctx.font=`bold 110px ${FONT_FAMILY}`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(pct+'%',cx,cy-12);
+    ctx.fillStyle='#9CA3AF';ctx.font=`600 ${bn?26:22}px ${FONT_FAMILY}`;
+    ctx.fillText(bn?'সম্পন্ন':'Completed',cx,cy+72);
+    ctx.textBaseline='alphabetic';
+    const div1Y=cardY+470;
+    ctx.strokeStyle='#E5E7EB';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(cardX+100,div1Y);ctx.lineTo(cardX+cardW-100,div1Y);ctx.stroke();
+    ctx.fillStyle='#1F2937';ctx.font=`700 ${bn?44:40}px ${FONT_FAMILY}`;ctx.textAlign='center';
+    ctx.fillText(name,W/2,div1Y+80);
+    ctx.fillStyle='#6B7280';ctx.font=`600 28px ${FONT_FAMILY}`;
+    ctx.fillText(klass,W/2,div1Y+135);
+    const div2Y=div1Y+195;
+    ctx.strokeStyle='#E5E7EB';ctx.beginPath();ctx.moveTo(cardX+100,div2Y);ctx.lineTo(cardX+cardW-100,div2Y);ctx.stroke();
+    const statY=div2Y+80;
+    const rankText = myRank ? ('#'+myRank) : '—';
+    const stats=[
+        {v:String(done),l:bn?'সম্পন্ন':'Done',c:'#10B981'},
+        {v:String(total),l:bn?'মোট':'Total',c:'#4F46E5'},
+        {v:rankText,l:bn?'র‍্যাংক':'Rank',c:'#F59E0B'}
+    ];
+    const boxW=(cardW-200)/3;const boxStartX=cardX+100;
+    stats.forEach((st,i)=>{
+        const bx=boxStartX+boxW*i;const sxc=bx+boxW/2;
+        if(i>0){ctx.strokeStyle='#E5E7EB';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(bx-8,statY-55);ctx.lineTo(bx-8,statY+60);ctx.stroke();}
+        ctx.fillStyle=st.c;ctx.font=`800 ${bn?62:56}px ${FONT_FAMILY}`;ctx.textAlign='center';
+        ctx.fillText(st.v,sxc,statY);
+        ctx.fillStyle='#9CA3AF';ctx.font=`600 24px ${FONT_FAMILY}`;
+        ctx.fillText(st.l,sxc,statY+45);
+    });
+    const dateStr=getShortDate();
+    const instrY=H-150;
+    ctx.fillStyle='#4F46E5';ctx.font=`700 ${bn?30:24}px ${FONT_FAMILY}`;ctx.textAlign='center';
+    ctx.fillText(bn?'শেয়ার বাটনে ক্লিক করুন':'Tap share to post',W/2,instrY);
+    ctx.fillStyle='#9CA3AF';ctx.font=`600 22px ${FONT_FAMILY}`;
+    ctx.fillText('syllabo HSC  •  '+dateStr,W/2,H-90);
+
+    currentShareCanvas=canvas;
+    document.getElementById('canvas-result-img').src=canvas.toDataURL('image/png');
+    document.getElementById('result-display-modal').classList.add('active');
+    // Auto-save to device gallery right after the card appears
+    setTimeout(()=>{try{canvas.toBlob(b=>{if(b)triggerDownloadBlob(b);},'image/png');}catch(e){}},250);
+};
+window.closeResultModal=function(){document.getElementById('result-display-modal').classList.remove('active');};
+
+/* ---------- SHARE / DOWNLOAD LOGIC ---------- */
+function triggerDownloadBlob(blob){
+    try{
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');
+        a.href=url;
+        a.download='syllabo-progress-'+Date.now()+'.png';
+        a.style.display='none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(()=>URL.revokeObjectURL(url),1500);
+    }catch(e){console.warn('Download fail',e);}
+}
+window.downloadResultImage=function(){
+    if(!currentShareCanvas)return;
+    const bn=getLanguage()==='bn';
+    currentShareCanvas.toBlob(b=>{
+        if(b){
+            triggerDownloadBlob(b);
+            showToast(bn?'গ্যালারিতে ডাউনলোড হয়েছে':'Saved to gallery');
+        }else{
+            showToast(bn?'ডাউনলোড ব্যর্থ':'Download failed');
+        }
+    },'image/png');
+};
+window.shareResultImage=async function(){
+    if(!currentShareCanvas)return;
+    const bn=getLanguage()==='bn';
+    const shareLabel=document.getElementById('share-btn-label');
+    const oldLabel=shareLabel?shareLabel.innerText:'';
+    if(shareLabel)shareLabel.innerText=bn?'প্রস্তুত হচ্ছে...':'Preparing...';
+    try{
+        const blob=await new Promise(res=>currentShareCanvas.toBlob(res,'image/png'));
+        if(!blob)throw new Error('no blob');
+        // Auto download to gallery as user requested
+        triggerDownloadBlob(blob);
+        const file=new File([blob],'syllabo-progress.png',{type:'image/png'});
+        const shareText=bn?'আমার HSC প্রস্তুতির অগ্রগতি — syllabo দিয়ে ট্র্যাক করছি!':'My HSC preparation progress — tracked with syllabo!';
+        if(navigator.canShare&&navigator.canShare({files:[file]})){
+            try{
+                await navigator.share({
+                    files:[file],
+                    title:'syllabo HSC',
+                    text:shareText
+                });
+            }catch(err){
+                if(err&&err.name==='AbortError'){/* user cancelled */}
+                else throw err;
+            }
+        }else if(navigator.share){
+            try{await navigator.share({title:'syllabo HSC',text:shareText,url:location.origin});}
+            catch(e){}
+        }else{
+            showToast(bn?'ছবি গ্যালারিতে সেভ হয়েছে':'Image saved to gallery');
+        }
+    }catch(err){
+        console.warn('Share fail',err);
+        if(!(err&&err.name==='AbortError'))
+            showToast(bn?'ছবি গ্যালারিতে সেভ হয়েছে':'Image saved to gallery');
+    }finally{
+        if(shareLabel)shareLabel.innerText=oldLabel||(bn?'শেয়ার করুন':'Share');
+    }
+};
+
+let selectedClass=null;
+window.toggleClassDropdown=function(e){e.stopPropagation();const t2=document.getElementById('class-dropdown-trigger');const m=document.getElementById('class-dropdown-menu');t2.classList.toggle('open');m.classList.toggle('open');};
+window.selectClass=function(v){selectedClass=v;document.getElementById('class-dropdown-label').innerText=v;const t2=document.getElementById('class-dropdown-trigger');t2.classList.remove('placeholder');document.querySelectorAll('#class-dropdown-menu .dropdown-item').forEach(el=>{el.classList.toggle('selected',el.dataset.value===v);});setTimeout(()=>{document.getElementById('class-dropdown-menu').classList.remove('open');t2.classList.remove('open');},150);};
+document.addEventListener('click',(e)=>{if(!e.target.closest('#class-dropdown-wrapper')){document.getElementById('class-dropdown-menu')?.classList.remove('open');document.getElementById('class-dropdown-trigger')?.classList.remove('open');}});
+function showAuthModal(){document.getElementById('auth-modal').classList.add('active');}
+function hideAuthModal(){document.getElementById('auth-modal').classList.remove('active');}
+window.hideAuthModal=hideAuthModal;
+function showAuthError(m){const e=document.getElementById('auth-error');e.innerText=m;e.classList.add('show');document.getElementById('auth-success').classList.remove('show');}
+function clearAuthMsgs(){document.getElementById('auth-error').classList.remove('show');document.getElementById('auth-success').classList.remove('show');}
+window.switchAuthTab=function(tab){clearAuthMsgs();document.querySelectorAll('.auth-tab').forEach(b=>b.classList.remove('active'));document.getElementById('auth-tab-'+tab).classList.add('active');document.getElementById('login-form').style.display=tab==='login'?'block':'none';document.getElementById('register-form').style.display=tab==='register'?'block':'none';};
+document.querySelectorAll('.auth-tab').forEach(b=>{b.addEventListener('click',function(){switchAuthTab(this.dataset.authTab);});});
+function fbError(err){const c=err.code||'';const bn=getLanguage()==='bn';const map={'auth/email-already-in-use':bn?'এই ইমেইল আগে থেকেই রেজিস্টার্ড।':'Email already registered.','auth/invalid-email':bn?'ইমেইল সঠিক নয়।':'Invalid email.','auth/weak-password':bn?'পাসওয়ার্ড কমপক্ষে ৬ অক্ষর।':'Password too short.','auth/user-not-found':bn?'এই ইমেইলে অ্যাকাউন্ট নেই।':'No account found.','auth/wrong-password':bn?'পাসওয়ার্ড ভুল।':'Wrong password.','auth/invalid-credential':bn?'ইমেইল বা পাসওয়ার্ড ভুল।':'Invalid credentials.','auth/too-many-requests':bn?'অনেকবার চেষ্টা। পরে করুন।':'Too many attempts.','auth/network-request-failed':bn?'নেটওয়ার্ক সমস্যা।':'Network error.'};return map[c]||(bn?'সমস্যা: ':'Error: ')+(err.message||c);}
+
+async function handleAuthSuccess(user,profileData){
+    currentUser=user;isLoggedIn=true;
+    if(profileData){userProfile={...profileData};}
+    else{const loaded=await loadUserProfileFromFirestore(user.uid);if(!loaded&&!userProfile.name){userProfile.name=user.displayName||(user.email||'').split('@')[0]||'Student';}}
+    if(!userProfile.name){userProfile.name=user.displayName||(user.email||'').split('@')[0]||'Student';}
+    localStorage.setItem(PROFILE_KEY,JSON.stringify(userProfile));
+    setCachedAuth({uid:user.uid,email:user.email,profile:userProfile,ts:Date.now()});
+    hideAuthModal();updateProfileUI();document.getElementById('app-loader').classList.add('hidden');
+    if(currentView==='home')renderHomeView();
+    else if(currentView==='subject'&&currentSubject)renderSubjectView(currentSubject);
+    else if(currentView==='leaderboard')renderLeaderboardPage();
+    updateOverallProgress();
+    startUserDocListener(user.uid);
+    setTimeout(()=>{incrementVisitCounters();fetchGlobalVisits().then(()=>{if(currentView==='home')renderHomeView();});fetchLeaderboard().then(()=>{if(currentView==='leaderboard')renderLeaderboardPage();});fetchNotifications();},300);
+}
+
+window.handleLogin=async function(e){e.preventDefault();clearAuthMsgs();const email=document.getElementById('login-email').value.trim();const pass=document.getElementById('login-password').value;const btn=document.getElementById('login-submit-btn');btn.disabled=true;btn.innerText=t('loggingIn');try{const cred=await auth.signInWithEmailAndPassword(email,pass);await handleAuthSuccess(cred.user);btn.disabled=false;btn.innerText='লগ ইন করুন';document.getElementById('login-email').value='';document.getElementById('login-password').value='';}catch(err){showAuthError(fbError(err));btn.disabled=false;btn.innerText=getLanguage()==='bn'?'লগ ইন করুন':'Log in';}};
+
+window.handleRegister=async function(e){
+    e.preventDefault();clearAuthMsgs();
+    const name=document.getElementById('reg-name').value.trim();
+    const email=document.getElementById('reg-email').value.trim();
+    const pass=document.getElementById('reg-password').value;
+    const eiin=document.getElementById('reg-eiin').value.trim();
+    const extra=document.getElementById('reg-extra').value.trim();
+    const terms=document.getElementById('reg-terms').checked;
+    if(!name){showAuthError(t('nameRequired'));return;}
+    if(!selectedClass){showAuthError(t('classRequired'));return;}
+    if(!terms){showAuthError(t('termsRequired'));return;}
+    const btn=document.getElementById('register-submit-btn');
+    btn.disabled=true;btn.innerText=t('registering');
+    try{
+        const cred=await auth.createUserWithEmailAndPassword(email,pass);
+        const uid=cred.user.uid;
+        const profileData={name,class:selectedClass,email,eiin:eiin||'',extraInfo:extra||'',photoURL:''};
+        try{await db.collection('users').doc(uid).set({uid,name,class:selectedClass,email,eiin:eiin||'',extraInfo:extra||'',photoURL:'',completedIds:[...getCompletedIds()],completedCount:getCompletedIds().size,visitCount:1,createdAt:FieldValue.serverTimestamp(),lastVisit:FieldValue.serverTimestamp(),lastActive:FieldValue.serverTimestamp()},{merge:true});}catch(err){console.warn('Firestore write deferred:',err.message);}
+        await handleAuthSuccess(cred.user,profileData);
+        btn.disabled=false;btn.innerText='রেজিস্ট্রেশন করুন';
+    }catch(err){showAuthError(fbError(err));btn.disabled=false;btn.innerText=getLanguage()==='bn'?'রেজিস্ট্রেশন করুন':'Register';}
+};
+
+function startUserDocListener(uid){if(unsubUserDoc)unsubUserDoc();unsubUserDoc=db.collection('users').doc(uid).onSnapshot(doc=>{if(doc.exists){const d=doc.data();let changed=false;if(d.name&&d.name!==userProfile.name){userProfile.name=d.name;changed=true;}if(d.photoURL!==undefined&&d.photoURL!==userProfile.photoURL){userProfile.photoURL=d.photoURL;changed=true;}if(d.class&&d.class!==userProfile.class){userProfile.class=d.class;changed=true;}if(changed){localStorage.setItem(PROFILE_KEY,JSON.stringify(userProfile));updateProfileUI();const ca=getCachedAuth();if(ca){ca.profile=userProfile;setCachedAuth(ca);}if(currentView==='leaderboard')renderLeaderboardPage();}}},err=>console.warn('User doc snapshot:',err.message));}
+
+function applyLoggedInState(){hideAuthModal();updateProfileUI();document.getElementById('app-loader').classList.add('hidden');if(currentView==='home')renderHomeView();else if(currentView==='subject'&&currentSubject)renderSubjectView(currentSubject);else if(currentView==='leaderboard')renderLeaderboardPage();updateOverallProgress();}
+function showGuestState(){isLoggedIn=false;updateProfileUI();document.getElementById('app-loader').classList.add('hidden');if(currentView==='home')renderHomeView();else if(currentView==='leaderboard')renderLeaderboardPage();showFirstTimeHint();}
+function showFirstTimeHint(){if(localStorage.getItem(HINT_KEY))return;const cached=getCachedAuth();if(cached)return;setTimeout(()=>{const hb=document.getElementById('profileHint');if(hb&&!isLoggedIn)hb.classList.add('show');localStorage.setItem(HINT_KEY,'1');setTimeout(()=>{if(hb)hb.classList.remove('show');},8000);},600);}
+
+auth.onAuthStateChanged(async(user)=>{
+    if(initialAuthHandled)return;
+    initialAuthHandled=true;
+    const cached=getCachedAuth();
+    if(cached&&cached.uid){
+        currentUser={uid:cached.uid,email:cached.email};
+        userProfile=cached.profile||userProfile;
+        isLoggedIn=true;
+        applyLoggedInState();
+        if(navigator.onLine&&user&&user.uid===cached.uid){loadUserProfileFromFirestore(cached.uid).then(()=>{updateProfileUI();startUserDocListener(cached.uid);});}
+        setTimeout(()=>{incrementVisitCounters();fetchGlobalVisits();fetchLeaderboard();fetchNotifications();},500);
+        return;
+    }
+    if(user){await handleAuthSuccess(user);return;}
+    showGuestState();
+});
+
+function updateOfflineIndicator(){const ind=document.getElementById('offline-indicator');if(!ind)return;if(!navigator.onLine)ind.classList.add('show');else ind.classList.remove('show');}
+window.addEventListener('online',()=>{updateOfflineIndicator();if(currentUser&&isLoggedIn){syncProgressToFirestore();fetchGlobalVisits().then(()=>{if(currentView==='home')renderHomeView();});fetchLeaderboard().then(()=>{if(currentView==='leaderboard')renderLeaderboardPage();});fetchNotifications();}});
+window.addEventListener('offline',updateOfflineIndicator);
+
+function applyLanguage(){
+    document.getElementById('loader-text').innerText=t('loading');
+    const lt=document.getElementById('lb-page-title-text');if(lt)lt.innerText=t('lbTitle');
+    const rkBtn=document.getElementById('lb-tab-btn-ranking');if(rkBtn)rkBtn.querySelector('span').innerText=t('lbRanking');
+    const prBtn=document.getElementById('lb-tab-btn-progress');if(prBtn)prBtn.querySelector('span').innerText=t('lbProgress');
+    const sb=document.getElementById('share-btn-label');
+    if(sb)sb.innerText=getLanguage()==='bn'?'শেয়ার করুন':'Share';
+    const db=document.getElementById('download-btn-label');
+    if(db)db.innerText=getLanguage()==='bn'?'ডাউনলোড':'Download';
+    if(currentView==='home')renderHomeView();
+    else if(currentView==='subject'&&currentSubject)renderSubjectView(currentSubject);
+    else if(currentView==='leaderboard')renderLeaderboardPage();
+    updateOverallProgress();updateTimerStatusDisplay();updateTimerDisplay();updateNotificationBadge();updateProfileUI();renderSubjectProgress();renderSubjectOrderList();
+}
+
+document.getElementById('save-profile-btn').addEventListener('click',()=>{const n=document.getElementById('profile-name-input').value.trim();const p=document.getElementById('avatar-url-input').value.trim();if(n)userProfile.name=n;userProfile.photoURL=p;saveProfile(userProfile);showToast(t('saved'));});
+document.getElementById('cancel-profile-btn').addEventListener('click',closeProfileModal);
+document.getElementById('restore-code-input').addEventListener('input',function(){this.value=this.value.replace(/[^0-9০-৯]/g,'').slice(0,4);});
+document.querySelectorAll('.mode-btn').forEach(b=>{b.addEventListener('click',function(){document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));this.classList.add('active');if(this.dataset.mode==='hours'){document.getElementById('timer-hours-mode').style.display='';document.getElementById('timer-date-mode').style.display='none';}else{document.getElementById('timer-hours-mode').style.display='none';document.getElementById('timer-date-mode').style.display='';}});});
+
+document.addEventListener('DOMContentLoaded',()=>{
+    initTheme();loadProfileLocal();initSettingsTabs();initLeaderboardTabs();setupRouter();applyLanguage();updateOverallProgress();updateTimerDisplay();updateOfflineIndicator();
+    setInterval(updateTimerDisplay,1000);
+    setInterval(()=>{updateTimerStatusDisplay();const st=getSuggestionState();if(st.date!==getTodayKey()&&currentView==='home')renderSuggestion();},30000);
+    setTimeout(()=>{document.getElementById('app-loader').classList.add('hidden');},2500);
+});
+</script>
+</body>
+</html>
